@@ -1,0 +1,44 @@
+{
+  "schema": "quest_catalog.v1",
+  "producer": {
+    "tool": "QuestForge",
+    "version": "0.1.0",
+    "generatedAt": "2026-02-23T08:00:00.000Z"
+  },
+  "meta": {
+    "description": "Ashwood Forest quest chain for Emberfall"
+  },
+  "quests": [
+    {
+      "id": "quest-strange-howls",
+      "name": "Strange Howls",
+      "zone_ref": "ashwood-forest",
+      "tags": ["main-quest", "combat"],
+      "difficulty_tier": "starter",
+      "lifecycle_state": "approved",
+      "version": 1,
+      "quest_giver": {
+        "type": "npc",
+        "ref": "ea:npc-elder-thorn"
+      },
+      "quest_ender": {
+        "type": "npc",
+        "ref": "ea:npc-elder-thorn"
+      },
+      "start_node_id": "accept",
+      "nodes": [
+        { "id": "accept", "type": "objective" },
+        { "id": "find-wolves", "type": "objective" },
+        { "id": "kill-wolves", "type": "objective" },
+        { "id": "return-to-elder", "type": "objective" },
+        { "id": "done", "type": "terminal_success" }
+      ],
+      "edges": [
+        { "from": "accept", "to": "find-wolves" },
+        { "from": "find-wolves", "to": "kill-wolves", "condition": "reached_clearings" },
+        { "from": "kill-wolves", "to": "return-to-elder", "condition": "ember_wolves_killed >= 3" },
+        { "from": "return-to-elder", "to": "done" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gamedev-contracts.amerzel.dev/entity_catalog.v1.schema.json",
+  "title": "entity_catalog.v1",
+  "description": "A collection of game entities produced by EntityArchitect. Each entry carries a category-specific data payload.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "entities"
+  ],
+  "properties": {
+    "schema": {
+      "const": "entity_catalog.v1"
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/entity"
+      }
+    },
+    "producer": {
+      "type": "object",
+      "description": "Identifies the tool that generated this document (VOCABULARY.md §1).",
+      "additionalProperties": false,
+      "required": [
+        "tool",
+        "version",
+        "generatedAt"
+      ],
+      "properties": {
+        "tool": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "generatedAt": {
+          "type": "string",
+          "description": "ISO 8601 timestamp of generation."
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Tool-specific extension metadata. Keyed by tool name. Consumers MUST ignore unknown keys.",
+          "additionalProperties": true
+        }
+      }
+    }
+  },
+  "$defs": {
+    "entity": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "id",
+        "name",
+        "category",
+        "lifecycle_state"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*[a-z0-9]$"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "weapon",
+            "enemy",
+            "ability",
+            "armor",
+            "consumable",
+            "material",
+            "item_set",
+            "resource_node",
+            "npc",
+            "class",
+            "status_effect",
+            "loot_table",
+            "crafting_recipe",
+            "currency"
+          ]
+        },
+        "lifecycle_state": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "reviewed",
+            "approved",
+            "deprecated",
+            "archived"
+          ]
+        },
+        "data": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

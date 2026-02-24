@@ -1,0 +1,64 @@
+{
+  "schema": "asset_requirements.v1",
+  "mapId": "ashwood-forest",
+  "packRef": {
+    "packId": "terrain-pack-ashwood",
+    "version": "1.0.0"
+  },
+  "producer": {
+    "tool": "TerrainComposer",
+    "version": "0.1.0",
+    "generatedAt": "2026-02-24T15:35:00.000Z"
+  },
+  "missing": [
+    {
+      "id": "dirt_v2",
+      "kind": "base",
+      "material": "dirt",
+      "count": 42,
+      "suggestedVariants": 2,
+      "tileSize": 16,
+      "description": "Additional dirt base variant for visual diversity"
+    },
+    {
+      "id": "dirt_grass_ms1001",
+      "kind": "transition",
+      "boundary": ["dirt", "grass"],
+      "count": 17,
+      "tileSize": 16,
+      "description": "Dirt-grass marching-squares case 9 (DR+UL corners)",
+      "transition": {
+        "model": "marching-squares",
+        "case": 9,
+        "cornerBits": "1001"
+      },
+      "reference": {
+        "image": "ref_dirt_grass_ms1001.png",
+        "colorMap": {
+          "dirt": "#8B6914",
+          "grass": "#4A7C2E"
+        }
+      }
+    },
+    {
+      "id": "grass_water_ms1100",
+      "kind": "transition",
+      "boundary": ["grass", "water"],
+      "count": 8,
+      "tileSize": 16,
+      "description": "Grass-water marching-squares case 3 (UL+DL corners)",
+      "transition": {
+        "model": "marching-squares",
+        "case": 3,
+        "cornerBits": "1100"
+      },
+      "reference": {
+        "image": "ref_grass_water_ms1100.png",
+        "colorMap": {
+          "grass": "#4A7C2E",
+          "water": "#2E5FA1"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "schema": "zone.v1",
+  "id": "ashwood-forest",
+  "display_name": "Ashwood Forest",
+  "description": "Dense forest scorched by the Emberfall event, now home to ember-mutated wolves and giant spiders.",
+  "level_range": [1, 5],
+  "zone_type": "overworld",
+  "regions": [
+    {
+      "id": "dense-woods",
+      "terrain": "forest",
+      "area_pct": 0.45,
+      "description": "Thick scorched trees with spider webs between branches.",
+      "level_range": [1, 3],
+      "entities": {
+        "enemies": ["ea:enm-ashwood-spider"],
+        "density": "standard",
+        "resource_nodes": ["ea:node-herb-patch"]
+      }
+    },
+    {
+      "id": "clearings",
+      "terrain": "grass",
+      "area_pct": 0.25,
+      "description": "Open meadows where Ember Wolves patrol in packs of 2-3.",
+      "level_range": [2, 4],
+      "entities": {
+        "enemies": ["ea:enm-ember-wolf"],
+        "density": "sparse",
+        "resource_nodes": ["ea:node-iron-vein"]
+      }
+    },
+    {
+      "id": "watchtower-ruins",
+      "terrain": "stone_ruins",
+      "area_pct": 0.15,
+      "description": "Collapsed watchtower from before the Emberfall. Alpha wolf lair.",
+      "level_range": [3, 5],
+      "landmark": true,
+      "entities": {
+        "enemies": ["ea:enm-ember-wolf-alpha"],
+        "density": "dense"
+      }
+    }
+  ],
+  "connections": [
+    { "target_zone": "emberfall-village", "edge": "west", "type": "path" },
+    { "target_zone": "cindervault-cave", "edge": "east", "type": "cave_entrance" }
+  ],
+  "paths": [
+    { "from": "connections.emberfall-village", "to": "clearings", "type": "road" },
+    { "from": "clearings", "to": "dense-woods", "type": "trail" },
+    { "from": "clearings", "to": "watchtower-ruins", "type": "trail" }
+  ],
+  "quest_locations": [
+    {
+      "quest_ref": "qf:quest:strange-howls",
+      "objective": "kill_ember_wolves",
+      "region": "clearings",
+      "notes": "Wolves patrol in packs of 2-3"
+    }
+  ],
+  "npcs": [
+    {
+      "ref": "ea:npc-elder-thorn",
+      "region": "clearings",
+      "placement": "fixed",
+      "notes": "Herbalist at the forest edge, gives gathering quest"
+    }
+  ],
+  "audio_hints": {
+    "ambient": "dark_forest",
+    "music_mood": "exploration_tense",
+    "combat_music": "standard_combat"
+  },
+  "terrain_pack_ref": "tc:terrain-pack-ashwood",
+  "crucible_template": "content.templates.zone_design.starter"
+}

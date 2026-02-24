@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gamedev-contracts.amerzel.dev/populated_level.v1.schema.json",
+  "title": "populated_level.v1",
+  "description": "Fully populated level export from EncounterComposer containing all encounter artifacts for a zone.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "zone_ref",
+    "exported_at",
+    "encounters"
+  ],
+  "properties": {
+    "schema": {
+      "const": "populated_level.v1"
+    },
+    "zone_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exported_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "producer": {
+      "$ref": "#/$defs/producer"
+    },
+    "upstream_hashes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "terrain",
+        "entities",
+        "crucible"
+      ],
+      "properties": {
+        "terrain": {
+          "type": ["string", "null"]
+        },
+        "entities": {
+          "type": ["string", "null"]
+        },
+        "crucible": {
+          "type": ["string", "null"]
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_encounters",
+        "total_groups",
+        "total_patrols",
+        "total_triggers",
+        "total_waves",
+        "difficulty_budget_total",
+        "level_range",
+        "entity_types_used"
+      ],
+      "properties": {
+        "total_encounters": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_groups": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_patrols": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_triggers": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "total_waves": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "difficulty_budget_total": {
+          "type": "number"
+        },
+        "level_range": {
+          "type": "array",
+          "description": "Two-element array [min, max] for the level range.",
+          "items": {
+            "type": "integer"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "entity_types_used": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "encounters": {
+      "type": "array",
+      "description": "Expanded encounter artifacts.",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "patrols": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "trigger_zones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "spawn_waves": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "difficulty_profiles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true
+      }
+    },
+    "meta": {
+      "$ref": "#/$defs/meta"
+    }
+  },
+  "$defs": {
+    "producer": {
+      "type": "object",
+      "description": "Identifies the tool that generated this document.",
+      "additionalProperties": false,
+      "required": [
+        "tool",
+        "version",
+        "generatedAt"
+      ],
+      "properties": {
+        "tool": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "generatedAt": {
+          "type": "string",
+          "description": "ISO 8601 timestamp of generation."
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Tool-specific extension metadata. Keyed by tool name. Consumers MUST ignore unknown keys.",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gamedev-contracts.amerzel.dev/quest_catalog.v1.schema.json",
+  "title": "quest_catalog.v1",
+  "description": "A collection of quests produced by QuestForge. Each entry describes a quest graph with nodes and edges.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "quests"
+  ],
+  "properties": {
+    "schema": {
+      "const": "quest_catalog.v1"
+    },
+    "quests": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/quest"
+      }
+    },
+    "producer": {
+      "type": "object",
+      "description": "Identifies the tool that generated this document (VOCABULARY.md §1).",
+      "additionalProperties": false,
+      "required": [
+        "tool",
+        "version",
+        "generatedAt"
+      ],
+      "properties": {
+        "tool": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "generatedAt": {
+          "type": "string",
+          "description": "ISO 8601 timestamp of generation."
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Tool-specific extension metadata. Keyed by tool name. Consumers MUST ignore unknown keys.",
+          "additionalProperties": true
+        }
+      }
+    }
+  },
+  "$defs": {
+    "quest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "const": "quest"
+        },
+        "zone_ref": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "difficulty_tier": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lifecycle_state": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "reviewed",
+            "approved",
+            "deprecated",
+            "archived"
+          ]
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "quest_giver": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "enum": [
+                "npc",
+                "item",
+                "area_trigger",
+                "auto_accept",
+                "billboard"
+              ]
+            },
+            "ref": {
+              "type": "string"
+            }
+          }
+        },
+        "quest_ender": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "properties": {
+            "type": {
+              "enum": [
+                "npc",
+                "auto_complete",
+                "item_use",
+                "location"
+              ]
+            },
+            "ref": {
+              "type": "string"
+            }
+          }
+        },
+        "start_node_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/quest_node"
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/quest_edge"
+          }
+        }
+      }
+    },
+    "quest_node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "objective",
+            "decision",
+            "gate",
+            "parallel_fork",
+            "parallel_join",
+            "wait",
+            "variable_op",
+            "terminal_success",
+            "terminal_fail"
+          ]
+        }
+      }
+    },
+    "quest_edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from",
+        "to"
+      ],
+      "properties": {
+        "from": {
+          "type": "string",
+          "minLength": 1
+        },
+        "to": {
+          "type": "string",
+          "minLength": 1
+        },
+        "condition": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

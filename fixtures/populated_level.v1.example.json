@@ -1,0 +1,53 @@
+{
+  "schema": "populated_level.v1",
+  "zone_ref": "ashwood-forest",
+  "exported_at": "2026-02-24T17:00:00.000Z",
+  "producer": {
+    "tool": "EncounterComposer",
+    "version": "0.1.0",
+    "generatedAt": "2026-02-24T17:00:00.000Z"
+  },
+  "upstream_hashes": {
+    "terrain": "sha256:a1b2c3d4e5f6",
+    "entities": "sha256:f6e5d4c3b2a1",
+    "crucible": "sha256:112233445566"
+  },
+  "summary": {
+    "total_encounters": 2,
+    "total_groups": 1,
+    "total_patrols": 0,
+    "total_triggers": 0,
+    "total_waves": 0,
+    "difficulty_budget_total": 120.0,
+    "level_range": [1, 5],
+    "entity_types_used": ["ea:enm-ember-wolf", "ea:enm-ashwood-spider"]
+  },
+  "encounters": [
+    {
+      "id": "ec:enc-wolf-pack-clearing-01",
+      "region": "clearings",
+      "entities": [
+        { "ref": "ea:enm-ember-wolf", "count": 3 }
+      ],
+      "difficulty_budget": 75.0,
+      "position": { "x": 112, "y": 26 }
+    },
+    {
+      "id": "ec:enc-spider-nest-woods-01",
+      "region": "dense-woods",
+      "entities": [
+        { "ref": "ea:enm-ashwood-spider", "count": 4 }
+      ],
+      "difficulty_budget": 45.0,
+      "position": { "x": 50, "y": 33 }
+    }
+  ],
+  "groups": [
+    {
+      "id": "grp-ashwood-patrol-01",
+      "encounter_ids": ["ec:enc-wolf-pack-clearing-01"],
+      "behavior": "patrol",
+      "region": "clearings"
+    }
+  ]
+}

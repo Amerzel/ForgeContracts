@@ -1,0 +1,52 @@
+{
+  "schema": "game_design.v1",
+  "producer": {
+    "tool": "Crucible",
+    "version": "0.3.0",
+    "generatedAt": "2026-02-18T09:00:00.000Z"
+  },
+  "metadata": {
+    "game_name": "Emberfall",
+    "genre": "action-rpg",
+    "pillars": ["exploration", "combat", "crafting"],
+    "tone": "dark-fantasy",
+    "target_audience": "casual-to-mid",
+    "art_style": "pixel-art-16x16",
+    "version": "0.1.0",
+    "description": "A top-down action RPG set in a world scarred by a catastrophic magical event."
+  },
+  "modules": {
+    "combat": {
+      "constants": {
+        "base_attack_speed": { "value": 1.0, "description": "Attacks per second at level 1", "unit": "attacks/s" },
+        "crit_chance_base": 0.05,
+        "crit_damage_multiplier": 1.5
+      },
+      "formulas": {
+        "physical_damage": {
+          "expression": "weapon_damage * (1 + strength * strength_scaling)",
+          "parameters": ["weapon_damage", "strength"],
+          "constants": ["strength_scaling"],
+          "returns": "damage",
+          "description": "Base physical damage before armor reduction"
+        }
+      }
+    },
+    "progression": {
+      "constants": {
+        "max_level": 50,
+        "xp_base": 100,
+        "xp_scaling": 1.15
+      },
+      "curves": {
+        "xp_to_level": {
+          "type": "parametric",
+          "expression": "xp_base * (xp_scaling ^ (level - 1))",
+          "parameter": "level",
+          "domain": [1, 50],
+          "description": "XP required to reach a given level"
+        }
+      }
+    }
+  }
+}

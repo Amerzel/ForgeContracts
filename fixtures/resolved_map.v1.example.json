@@ -1,0 +1,61 @@
+{
+  "schema": "resolved_map.v1",
+  "mapId": "ashwood-forest",
+  "width": 4,
+  "height": 4,
+  "pack": {
+    "packId": "terrain-pack-ashwood",
+    "version": "1.0.0"
+  },
+  "seed": 42,
+  "tileLookup": [
+    { "id": 0, "tileId": "grass_base", "material": "grass", "kind": "base" },
+    { "id": 1, "tileId": "dirt_base", "material": "dirt", "kind": "base" },
+    { "id": 2, "tileId": "water_base", "material": "water", "kind": "base" },
+    { "id": 3, "tileId": "dirt_grass_ms0001", "kind": "transition", "boundary": ["dirt", "grass"], "transform": "none" }
+  ],
+  "layers": [
+    {
+      "name": "terrain",
+      "encoding": "rle",
+      "rows": [
+        "0:4",
+        "0:1,1:2,0:1",
+        "0:1,3:1,2:2",
+        "0:2,2:2"
+      ]
+    },
+    {
+      "name": "transition",
+      "encoding": "rle",
+      "rows": [
+        "0:4",
+        "0:1,3:1,0:2",
+        "0:4",
+        "0:4"
+      ],
+      "defaultTile": 0
+    }
+  ],
+  "producer": {
+    "tool": "TerrainComposer",
+    "version": "0.1.0",
+    "generatedAt": "2026-02-24T15:30:00.000Z"
+  },
+  "provenance": {
+    "requestId": "req_ashwood_001",
+    "runId": "run_tc_42",
+    "semanticMapRef": "ashwood-forest_semantic.v1.json",
+    "levelIntentRef": "ashwood-forest_intent.v1.json"
+  },
+  "meta": {
+    "coordSystem": "top-left",
+    "tileSize": 16,
+    "extensions": {
+      "terrainComposer": {
+        "wfc_enabled": false,
+        "clutter_density": 0.2
+      }
+    }
+  }
+}

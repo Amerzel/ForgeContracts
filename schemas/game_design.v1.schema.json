@@ -1,0 +1,506 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gamedev-contracts.amerzel.dev/game_design.v1.schema.json",
+  "title": "game_design.v1",
+  "description": "Crucible game-design document — the vocabulary authority and source of truth for material names, entity categories, constants, formulas, and all other design data that downstream tools consume.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "metadata",
+    "modules"
+  ],
+  "properties": {
+    "schema": {
+      "const": "game_design.v1"
+    },
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tool": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "tool",
+        "version"
+      ]
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "game_name",
+        "genre"
+      ],
+      "properties": {
+        "game_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "genre": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pillars": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tone": {
+          "type": "string"
+        },
+        "target_audience": {
+          "type": "string"
+        },
+        "art_style": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "modules": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/moduleDefinition"
+      }
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Tool-specific extension metadata. Keyed by tool name. Consumers MUST ignore unknown keys.",
+          "additionalProperties": true
+        }
+      }
+    }
+  },
+  "$defs": {
+    "moduleDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "constants": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/constantValue"
+          }
+        },
+        "formulas": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/formulaDefinition"
+          }
+        },
+        "curves": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/curveDefinition"
+          }
+        },
+        "taxonomies": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/taxonomyDefinition"
+          }
+        },
+        "templates": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object"
+          }
+        },
+        "constraints": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/constraintDefinition"
+          }
+        },
+        "targets": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/targetDefinition"
+          }
+        },
+        "scenarios": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/scenarioDefinition"
+          }
+        }
+      }
+    },
+    "constantValue": {
+      "oneOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "value"
+          ],
+          "properties": {
+            "value": {
+              "type": "number"
+            },
+            "description": {
+              "type": "string"
+            },
+            "unit": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "formulaDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expression",
+        "parameters",
+        "constants"
+      ],
+      "properties": {
+        "expression": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "constants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "returns": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "curveDefinition": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/parametricCurve"
+        },
+        {
+          "$ref": "#/$defs/lookupCurve"
+        }
+      ]
+    },
+    "parametricCurve": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "expression",
+        "parameter",
+        "domain"
+      ],
+      "properties": {
+        "type": {
+          "const": "parametric"
+        },
+        "expression": {
+          "type": "string"
+        },
+        "parameter": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "lookupCurve": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "points"
+      ],
+      "properties": {
+        "type": {
+          "const": "lookup"
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "interpolation": {
+          "type": "string",
+          "enum": [
+            "linear",
+            "cubic"
+          ]
+        },
+        "parameter": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "taxonomyDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "values"
+      ],
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "label"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "ordered": {
+          "type": "boolean"
+        }
+      }
+    },
+    "constraintDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "parameters",
+        "assertion",
+        "severity",
+        "message"
+      ],
+      "properties": {
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "assertion": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "error",
+            "warning"
+          ]
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "targetDefinition": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/targetRange"
+        },
+        {
+          "$ref": "#/$defs/targetKeyedRange"
+        },
+        {
+          "$ref": "#/$defs/targetCurveRef"
+        },
+        {
+          "$ref": "#/$defs/targetLookup"
+        }
+      ]
+    },
+    "targetRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "min",
+        "max"
+      ],
+      "properties": {
+        "type": {
+          "const": "range"
+        },
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "unit": {
+          "type": "string"
+        }
+      }
+    },
+    "targetKeyedRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "key_taxonomy",
+        "values"
+      ],
+      "properties": {
+        "type": {
+          "const": "keyed_range"
+        },
+        "key_taxonomy": {
+          "type": "string"
+        },
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "min",
+              "max"
+            ],
+            "properties": {
+              "min": {
+                "type": "number"
+              },
+              "max": {
+                "type": "number"
+              },
+              "unit": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "targetCurveRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "curve_ref"
+      ],
+      "properties": {
+        "type": {
+          "const": "curve_ref"
+        },
+        "curve_ref": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "targetLookup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "points"
+      ],
+      "properties": {
+        "type": {
+          "const": "lookup"
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            },
+            "minItems": 2,
+            "maxItems": 2
+          }
+        },
+        "interpolation": {
+          "type": "string",
+          "enum": [
+            "linear",
+            "cubic"
+          ]
+        }
+      }
+    },
+    "scenarioDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "object",
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "parameters"
+      ]
+    }
+  }
+}

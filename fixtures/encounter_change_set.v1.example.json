@@ -1,0 +1,32 @@
+{
+  "schema": "encounter_change_set.v1",
+  "operation": "batch-create",
+  "zone_ref": "ashwood-forest",
+  "timestamp": "2026-02-24T16:00:00.000Z",
+  "run_id": "run_ec_101",
+  "producer": {
+    "tool": "EncounterComposer",
+    "version": "0.1.0",
+    "generatedAt": "2026-02-24T16:00:00.000Z"
+  },
+  "changes": [
+    {
+      "artifact_id": "ec:enc-wolf-pack-clearing-01",
+      "action": "create",
+      "summary": "Ember Wolf patrol pack (x3) in clearings region"
+    },
+    {
+      "artifact_id": "ec:enc-spider-nest-woods-01",
+      "action": "create",
+      "summary": "Ashwood Spider cluster (x4) near herb patches in dense-woods"
+    },
+    {
+      "artifact_id": "ec:enc-wolf-alpha-ruins-01",
+      "action": "create",
+      "summary": "Ember Wolf Alpha boss encounter at watchtower-ruins"
+    }
+  ],
+  "meta": {
+    "description": "Initial encounter scatter for ashwood-forest zone"
+  }
+}

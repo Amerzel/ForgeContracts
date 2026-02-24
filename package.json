@@ -1,0 +1,42 @@
+{
+  "name": "@amerzel/gamedev-contracts",
+  "version": "1.0.0",
+  "description": "Shared JSON Schema contracts for the game development tool pipeline",
+  "type": "module",
+  "exports": {
+    "./schemas/*": "./schemas/*",
+    "./fixtures/*": "./fixtures/*",
+    "./validate": "./src/validate.js",
+    "./types": "./dist/types/index.d.ts"
+  },
+  "files": [
+    "schemas",
+    "fixtures",
+    "src",
+    "dist/types",
+    "VOCABULARY.md",
+    "HANDOFF_MATRIX.md"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "generate-types": "node scripts/generate-types.js",
+    "prepublishOnly": "npm run generate-types && npm test"
+  },
+  "keywords": ["game-development", "json-schema", "contracts"],
+  "author": "Amerzel",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Amerzel/gamedev-contracts.git"
+  },
+  "devDependencies": {
+    "ajv": "^8.18.0",
+    "ajv-formats": "^3.0.1",
+    "json-schema-to-typescript": "^15.0.0",
+    "vitest": "^4.0.18"
+  },
+  "dependencies": {
+    "ajv": "^8.18.0",
+    "ajv-formats": "^3.0.1"
+  }
+}

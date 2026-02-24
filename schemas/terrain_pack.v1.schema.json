@@ -1,0 +1,395 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gamedev-contracts.amerzel.dev/terrain_pack.v1.schema.json",
+  "title": "terrain_pack.v1",
+  "description": "Authoritative schema for terrain asset packs. Defines the interchange format consumed by TerrainComposer, AssetGenerator, and other pipeline tools.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "packId",
+    "version",
+    "materials",
+    "colorMap",
+    "transitions",
+    "variants"
+  ],
+  "properties": {
+    "schema": {
+      "const": "terrain_pack.v1",
+      "description": "Document identity discriminator per VOCABULARY.md §1."
+    },
+    "producer": {
+      "type": "object",
+      "description": "Stamp identifying the tool that generated this document (VOCABULARY.md §1). Optional but recommended.",
+      "additionalProperties": false,
+      "required": ["tool", "version"],
+      "properties": {
+        "tool": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Name of the producing tool (e.g. \"AssetGenerator\", \"TerrainComposer\")."
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Semantic version of the producing tool."
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp of when the document was generated."
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "description": "Optional metadata and tool-specific extensions (VOCABULARY.md §6).",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of this terrain pack."
+        },
+        "author": {
+          "type": "string",
+          "description": "Author or team that created this pack."
+        },
+        "extensions": {
+          "type": "object",
+          "description": "Tool-specific metadata keyed by tool name. Consumers MUST ignore unknown keys under extensions.",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "packId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "materials": {
+      "type": "array",
+      "description": "List of terrain material identifiers. NOTE: AssetGenerator currently requires this array to be sorted alphabetically. Producers SHOULD emit materials in alphabetical order to ensure compatibility.",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_-]*$"
+      }
+    },
+    "colorMap": {
+      "type": "object",
+      "description": "Display color per material for preview rendering and reference image generation. Keys must match entries in materials.",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[a-z][a-z0-9_-]*$": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "atlas": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "image",
+        "tileSize"
+      ],
+      "properties": {
+        "image": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tileSize": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "columns": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "rows": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "tileIndex": {
+      "type": "object",
+      "description": "Maps each tileId to its atlas position (col, row). Required when atlas is present. Each entry must have col + row; an optional file field can provide an individual tile image path alongside.",
+      "patternProperties": {
+        "^.+$": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "col",
+            "row"
+          ],
+          "properties": {
+            "col": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "row": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "file": {
+              "type": "string",
+              "description": "Optional URI/path to an individual tile image file.",
+              "minLength": 1
+            },
+            "frameCount": {
+              "type": "integer",
+              "description": "Number of animation frames in the atlas strip. Frames are laid out left-to-right starting at (col, row). Absent means the tile is static (equivalent to frameCount: 1).",
+              "minimum": 2
+            },
+            "frameDurationMs": {
+              "type": "number",
+              "description": "Default frame duration in milliseconds for engine-side animation playback. If absent, the engine chooses its own default (e.g., 100ms). This is a hint only — engines may override per game context.",
+              "exclusiveMinimum": 0
+            },
+            "spriteSize": {
+              "type": "object",
+              "description": "Rendered sprite dimensions in pixels. For oversized sprites (e.g. shadows, foam) that span more than one grid cell. If absent, assume atlas.tileSize × atlas.tileSize.",
+              "additionalProperties": false,
+              "required": ["w", "h"],
+              "properties": {
+                "w": { "type": "integer", "minimum": 1 },
+                "h": { "type": "integer", "minimum": 1 }
+              }
+            },
+            "renderOffset": {
+              "type": "object",
+              "description": "Pixel offset from the tile grid origin to the sprite anchor (top-left). Negative values shift up/left. Used with spriteSize for oversized sprites.",
+              "additionalProperties": false,
+              "required": ["x", "y"],
+              "properties": {
+                "x": { "type": "integer" },
+                "y": { "type": "integer" }
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "transitions": {
+      "type": "array",
+      "minItems": 0,
+      "description": "Transition tile entries. May be empty for base-only packs (all boundaries become asset requirements).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "boundary",
+          "model",
+          "tileId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "boundary": {
+            "type": "array",
+            "description": "Ordered material pair. Canonical order is alphabetical by first element.",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_-]*$"
+            }
+          },
+          "model": {
+            "type": "string",
+            "enum": [
+              "marching-squares",
+              "wang",
+              "rule"
+            ]
+          },
+          "case": {
+            "type": "integer",
+            "description": "Numeric marching-squares case index derived from cornerBits. Encoding convention: reverse the cornerBits string and parse the result as a binary integer. For example, cornerBits \"0001\" → reversed \"1000\" → case 8. This ensures bit0 (rightmost in the integer) corresponds to the DR corner (first character in cornerBits).",
+            "minimum": 0,
+            "maximum": 255
+          },
+          "cornerBits": {
+            "type": "string",
+            "description": "Bit-string encoding which corners belong to the secondary material. Character order is DR(bit0), UR(bit1), UL(bit2), DL(bit3) for 4-bit marching squares. The numeric `case` value is computed by reversing this string and parsing as binary (e.g. cornerBits \"0001\" → reversed \"1000\" → case 8).",
+            "pattern": "^[01]{4,8}$"
+          },
+          "ruleId": {
+            "type": "string"
+          },
+          "wangCode": {
+            "type": "string"
+          },
+          "tileId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "transform": {
+            "type": "string",
+            "enum": [
+              "none",
+              "flipX",
+              "flipY",
+              "flipXY",
+              "rot90",
+              "rot180",
+              "rot270"
+            ]
+          },
+          "shapeConfidence": {
+            "type": "number",
+            "description": "Optional shape match score (0-100) from post-generation validation. When multiple tiles exist for the same case, the solver prefers higher-confidence tiles. Omit if not measured.",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "themeId": {
+            "type": "string",
+            "description": "Optional theme membership. Only selected when the composer has chosen this theme for the boundary pair. Omit for theme-less tiles (always eligible regardless of theme).",
+            "minLength": 1
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": { "model": { "const": "marching-squares" } },
+              "required": ["model"]
+            },
+            "then": {
+              "required": ["case", "cornerBits"]
+            }
+          },
+          {
+            "if": {
+              "properties": { "model": { "const": "wang" } },
+              "required": ["model"]
+            },
+            "then": {
+              "required": ["wangCode"]
+            }
+          },
+          {
+            "if": {
+              "properties": { "model": { "const": "rule" } },
+              "required": ["model"]
+            },
+            "then": {
+              "required": ["ruleId"]
+            }
+          }
+        ]
+      }
+    },
+    "variants": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tileId",
+          "material",
+          "weight"
+        ],
+        "properties": {
+          "tileId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "material": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_-]*$"
+          },
+          "weight": {
+            "type": "number",
+            "description": "Relative weight for variant selection. Higher values = more likely. Does not need to sum to 1.0; the solver normalizes per material group.",
+            "exclusiveMinimum": 0
+          },
+          "layers": {
+            "type": "array",
+            "description": "Reserved for future multi-layer rendering (e.g., ground + decoration overlay). The v1 solver does not read this field. Producers may safely omit it.",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "themeId": {
+            "type": "string",
+            "description": "Optional theme membership. Only selected when the composer has chosen this theme for this material. Omit for theme-less tiles (always eligible regardless of theme).",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "themes": {
+      "type": "array",
+      "description": "Declared color themes. The composer selects one theme per scope (global or per-material) and restricts tile/variant selection to tiles with matching themeId or no themeId (theme-less tiles are always eligible).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "name": { "type": "string" },
+          "description": { "type": "string" }
+        }
+      }
+    },
+    "materialEmits": {
+      "type": "object",
+      "description": "Additional tile layers emitted per material. Keys are material IDs. For each map cell where that material is the base, emit rules place tiles into additional named layers at optional grid offsets.",
+      "patternProperties": {
+        "^[a-z][a-z0-9_-]*$": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["tileId", "layer"],
+            "properties": {
+              "tileId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "layer": {
+                "type": "string",
+                "description": "Output layer name that this tile is emitted into.",
+                "minLength": 1
+              },
+              "dxTile": {
+                "type": "integer",
+                "description": "Column offset from the source cell (grid tiles). Default 0.",
+                "default": 0
+              },
+              "dyTile": {
+                "type": "integer",
+                "description": "Row offset from the source cell (grid tiles). Default 0.",
+                "default": 0
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": ["atlas"]
+      },
+      "then": {
+        "required": ["tileIndex"]
+      }
+    }
+  ]
+}
