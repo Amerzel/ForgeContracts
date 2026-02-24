@@ -8,6 +8,9 @@
   "required": [
     "schema",
     "mapId",
+    "zoneRef",
+    "tileSize",
+    "origin",
     "width",
     "height",
     "pack",
@@ -23,6 +26,21 @@
     "mapId": {
       "type": "string",
       "minLength": 1
+    },
+    "zoneRef": {
+      "type": "string",
+      "description": "Zone reference identifier, derived from the semantic map's mapId. Used by EncounterComposer to identify the zone.",
+      "minLength": 1
+    },
+    "tileSize": {
+      "type": "integer",
+      "description": "Tile size in pixels. Matches the semantic map's tileSize.",
+      "minimum": 1
+    },
+    "origin": {
+      "type": "string",
+      "description": "Coordinate origin convention. All maps use top-left origin.",
+      "enum": ["top-left"]
     },
     "width": {
       "type": "integer",

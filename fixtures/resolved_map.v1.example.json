@@ -1,6 +1,9 @@
 {
   "schema": "resolved_map.v1",
   "mapId": "ashwood-forest",
+  "zoneRef": "ashwood-forest",
+  "tileSize": 16,
+  "origin": "top-left",
   "width": 4,
   "height": 4,
   "pack": {
