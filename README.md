@@ -87,9 +87,21 @@ All contracts follow the rules in [VOCABULARY.md](VOCABULARY.md):
 
 ```bash
 npm install
-npm test                  # 32 tests — validates all fixtures against schemas
+npm test                  # validates fixtures and contract confidence checks
+npm run coverage          # runs tests with coverage + threshold gates
+npm run smoke             # end-to-end validation helper smoke path
 npm run generate-types    # regenerate TypeScript types from schemas
 ```
+
+## Confidence model
+
+- Coverage is enforced in CI via `npm run coverage` with minimum thresholds:
+  - lines/statements/functions: 90%
+  - branches: 80%
+- Coverage artifacts (`coverage-summary.json` and `lcov.info`) are uploaded on every PR/push.
+- Golden fixture confidence is enforced by validating all example fixtures and pinning a deterministic hash for the seeded `resolved_map.v1` fixture.
+- Ratcheting policy: thresholds should only move upward as coverage improves.
+- CI smoke path (`npm run smoke`) verifies the primary validation API against all fixtures end-to-end.
 
 ## Versioning
 

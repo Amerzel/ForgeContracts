@@ -10,7 +10,9 @@ const OUT_DIR = join(__dirname, '..', 'dist', 'types');
 
 mkdirSync(OUT_DIR, { recursive: true });
 
-const files = readdirSync(SCHEMAS_DIR).filter(f => f.endsWith('.schema.json'));
+const files = readdirSync(SCHEMAS_DIR)
+  .filter(f => f.endsWith('.schema.json'))
+  .sort();
 const exports = [];
 
 for (const file of files) {

@@ -13,7 +13,9 @@ function getAjv() {
   if (_ajv) return _ajv;
   _ajv = new Ajv({ allErrors: true, strict: false, validateSchema: false });
   addFormats(_ajv);
-  const files = readdirSync(SCHEMAS_DIR).filter(f => f.endsWith('.schema.json'));
+  const files = readdirSync(SCHEMAS_DIR)
+    .filter(f => f.endsWith('.schema.json'))
+    .sort();
   for (const file of files) {
     const schema = JSON.parse(readFileSync(join(SCHEMAS_DIR, file), 'utf-8'));
     _ajv.addSchema(schema);
@@ -49,5 +51,6 @@ export function validate(schemaName, data) {
 export function listSchemas() {
   return readdirSync(SCHEMAS_DIR)
     .filter(f => f.endsWith('.schema.json'))
+    .sort()
     .map(f => f.replace('.schema.json', ''));
 }

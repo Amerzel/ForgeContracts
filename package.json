@@ -19,10 +19,16 @@
   ],
   "scripts": {
     "test": "vitest run",
+    "coverage": "vitest run --coverage",
+    "smoke": "node scripts/smoke.js",
     "generate-types": "node scripts/generate-types.js",
     "prepublishOnly": "npm run generate-types && npm test"
   },
-  "keywords": ["game-development", "json-schema", "contracts"],
+  "keywords": [
+    "game-development",
+    "json-schema",
+    "contracts"
+  ],
   "author": "Amerzel",
   "license": "MIT",
   "repository": {
@@ -30,6 +36,7 @@
     "url": "https://github.com/Amerzel/gamedev-contracts.git"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^4.0.18",
     "ajv": "^8.18.0",
     "ajv-formats": "^3.0.1",
     "json-schema-to-typescript": "^15.0.0",
