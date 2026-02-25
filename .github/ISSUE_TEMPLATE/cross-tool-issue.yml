@@ -1,0 +1,104 @@
+name: Cross-Tool Issue
+description: An issue that spans multiple Forge tools or involves shared contracts.
+title: "cross-tool: short description"
+labels: ["scope: cross-tool", "status: triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template when an issue requires coordinated changes across
+        multiple Forge repos or involves a shared contract change.
+
+  - type: dropdown
+    id: upstream
+    attributes:
+      label: Upstream tool (produces the data/contract)
+      options:
+        - ForgeRules
+        - ForgeContracts
+        - ForgeAsset
+        - ForgeDirector
+        - ForgeEncounter
+        - ForgeEntity
+        - ForgeLore
+        - ForgeQuest
+        - ForgePipeline
+        - ForgeTerrain
+        - ForgeUI
+        - Forge App
+    validations:
+      required: true
+
+  - type: dropdown
+    id: downstream
+    attributes:
+      label: Downstream tool (consumes the data/contract)
+      multiple: true
+      options:
+        - ForgeRules
+        - ForgeContracts
+        - ForgeAsset
+        - ForgeDirector
+        - ForgeEncounter
+        - ForgeEntity
+        - ForgeLore
+        - ForgeQuest
+        - ForgePipeline
+        - ForgeTerrain
+        - ForgeUI
+        - Forge App
+    validations:
+      required: true
+
+  - type: input
+    id: contract
+    attributes:
+      label: Contract involved
+      description: Which shared schema or contract is affected?
+      placeholder: "e.g. zone_spec.schema.json, entity_definition.schema.json"
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What needs to change and why? Describe the coordination required.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: breaking
+    attributes:
+      label: Breaking change?
+      options:
+        - "No — backward compatible"
+        - "Yes — requires coordinated update"
+    validations:
+      required: true
+
+  - type: textarea
+    id: affected-repos
+    attributes:
+      label: Affected repos
+      description: List all repos that need changes, with a brief description of each change.
+      placeholder: |
+        - Amerzel/ForgeEntity — add `tier` field to entity schema
+        - Amerzel/ForgeContracts — update entity_definition.schema.json
+        - Amerzel/ForgeRules — add tier validation rules
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Migration plan, timeline considerations, related issues.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and this has not been reported
+          required: true
+        - label: I listed all affected repos above
+          required: true

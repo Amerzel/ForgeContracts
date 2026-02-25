@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/Amerzel/Forge/blob/main/TOOLS.md
+    about: Check the tool documentation before filing an issue.
+  - name: Forge Project Board
+    url: https://github.com/users/Amerzel/projects/1
+    about: View all active work across Forge tools.

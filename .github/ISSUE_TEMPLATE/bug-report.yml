@@ -1,0 +1,81 @@
+name: Bug Report
+description: Something isn't working correctly.
+title: "bug: short description"
+labels: ["type: bug", "status: triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a bug. Please fill in all fields so we can
+        reproduce and fix it quickly.
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Package version or commit SHA.
+      placeholder: "e.g. 1.2.0 or abc1234"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened? Be specific.
+      placeholder: "Describe the bug clearly."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps to trigger the bug.
+      placeholder: |
+        1. Run `forge-asset generate --config test.json`
+        2. Observe error in output
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should have happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happened? Include error messages or stack traces.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Cosmetic (visual/formatting issue)
+        - Minor (workaround exists)
+        - Major (core functionality broken)
+        - Critical (data loss, crash, or blocks all work)
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Environment details, screenshots, related issues, etc.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and this has not been reported
+          required: true
