@@ -31,7 +31,7 @@ function getAjv() {
  */
 export function validate(schemaName, data) {
   const ajv = getAjv();
-  const schemaId = `https://gamedev-contracts.amerzel.dev/${schemaName}.schema.json`;
+  const schemaId = `https://forge-contracts.amerzel.dev/${schemaName}.schema.json`;
   const validateFn = ajv.getSchema(schemaId);
   if (!validateFn) {
     return { valid: false, errors: [`Unknown schema: "${schemaName}"`] };

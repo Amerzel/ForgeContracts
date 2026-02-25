@@ -1,7 +1,7 @@
 {
-  "name": "@amerzel/gamedev-contracts",
+  "name": "@forge/contracts",
   "version": "1.0.0",
-  "description": "Shared JSON Schema contracts for the game development tool pipeline",
+  "description": "Shared JSON Schema contracts for the ForgeContracts tool pipeline",
   "type": "module",
   "exports": {
     "./schemas/*": "./schemas/*",
@@ -33,7 +33,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Amerzel/gamedev-contracts.git"
+    "url": "https://github.com/Amerzel/ForgeContracts.git"
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^4.0.18",

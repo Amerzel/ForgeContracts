@@ -1,6 +1,6 @@
-# @amerzel/gamedev-contracts
+# ForgeContracts (`@forge/contracts`)
 
-Shared JSON Schema contracts for the game development tool pipeline.
+Shared JSON Schema contracts for the ForgeContracts tool pipeline.
 
 ## What's Inside
 
@@ -12,13 +12,13 @@ Shared JSON Schema contracts for the game development tool pipeline.
 ## Install
 
 ```bash
-npm install @amerzel/gamedev-contracts --save-dev
+npm install @forge/contracts --save-dev
 ```
 
 Requires a `.npmrc` pointing to GitHub Packages:
 
 ```
-@amerzel:registry=https://npm.pkg.github.com
+@forge:registry=https://npm.pkg.github.com
 ```
 
 ## Usage
@@ -26,7 +26,7 @@ Requires a `.npmrc` pointing to GitHub Packages:
 ### Validate tool output against a contract
 
 ```js
-import { validate } from '@amerzel/gamedev-contracts/validate';
+import { validate } from '@forge/contracts/validate';
 
 const result = validate('resolved_map.v1', myResolvedMap);
 if (!result.valid) {
@@ -37,13 +37,13 @@ if (!result.valid) {
 ### Import schemas directly
 
 ```js
-import resolvedMapSchema from '@amerzel/gamedev-contracts/schemas/resolved_map.v1.schema.json' with { type: 'json' };
+import resolvedMapSchema from '@forge/contracts/schemas/resolved_map.v1.schema.json' with { type: 'json' };
 ```
 
 ### Use TypeScript types
 
 ```ts
-import type { ResolvedMapV1 } from '@amerzel/gamedev-contracts/types';
+import type { ResolvedMapV1 } from '@forge/contracts/types';
 
 function processMap(map: ResolvedMapV1) { ... }
 ```
@@ -51,7 +51,7 @@ function processMap(map: ResolvedMapV1) { ... }
 ### List available schemas
 
 ```js
-import { listSchemas } from '@amerzel/gamedev-contracts/validate';
+import { listSchemas } from '@forge/contracts/validate';
 
 console.log(listSchemas());
 // ['asset_requirements.v1', 'encounter_change_set.v1', 'entity_catalog.v1', ...]

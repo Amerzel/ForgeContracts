@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gamedev-contracts.amerzel.dev/quest_catalog.v1.schema.json",
+  "$id": "https://forge-contracts.amerzel.dev/quest_catalog.v1.schema.json",
   "title": "quest_catalog.v1",
   "description": "A collection of quests produced by QuestForge. Each entry describes a quest graph with nodes and edges.",
   "type": "object",

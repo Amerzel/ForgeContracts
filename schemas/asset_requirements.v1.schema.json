@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gamedev-contracts.amerzel.dev/asset_requirements.v1.schema.json",
+  "$id": "https://forge-contracts.amerzel.dev/asset_requirements.v1.schema.json",
   "title": "asset_requirements.v1",
   "description": "Declares missing or incomplete asset slots that a terrain pack needs filled. Produced by TerrainComposer, consumed by AssetGenerator.",
   "type": "object",

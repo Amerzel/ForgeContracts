@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gamedev-contracts.amerzel.dev/entity_catalog.v1.schema.json",
+  "$id": "https://forge-contracts.amerzel.dev/entity_catalog.v1.schema.json",
   "title": "entity_catalog.v1",
   "description": "A collection of game entities produced by EntityArchitect. Each entry carries a category-specific data payload.",
   "type": "object",

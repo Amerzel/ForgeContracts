@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gamedev-contracts.amerzel.dev/encounter_change_set.v1.schema.json",
+  "$id": "https://forge-contracts.amerzel.dev/encounter_change_set.v1.schema.json",
   "title": "encounter_change_set.v1",
   "description": "Change set emitted by EncounterComposer after mutating encounter artifacts for a zone.",
   "type": "object",

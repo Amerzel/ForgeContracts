@@ -1,4 +1,4 @@
-# Shared Vocabulary for Gamedev Tool Pipeline
+# Shared Vocabulary for ForgeContracts
 
 **Authority:** This document defines the universal conventions for all data that crosses tool boundaries. Internal representations are unconstrained — these rules apply only at the point where one tool's output becomes another tool's input.
 

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gamedev-contracts.amerzel.dev/populated_level.v1.schema.json",
+  "$id": "https://forge-contracts.amerzel.dev/populated_level.v1.schema.json",
   "title": "populated_level.v1",
   "description": "Fully populated level export from EncounterComposer containing all encounter artifacts for a zone.",
   "type": "object",

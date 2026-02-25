@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gamedev-contracts.amerzel.dev/zone.v1.schema.json",
+  "$id": "https://forge-contracts.amerzel.dev/zone.v1.schema.json",
   "title": "zone.v1",
   "description": "Master design document for a game zone. Drives all specialist tools in the pipeline.",
   "type": "object",

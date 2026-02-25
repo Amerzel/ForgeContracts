@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gamedev-contracts.amerzel.dev/level_intent.v1.schema.json",
+  "$id": "https://forge-contracts.amerzel.dev/level_intent.v1.schema.json",
   "title": "level_intent.v1",
   "description": "Optional high-level level design intent that can be compiled to semantic_map.v1.",
   "type": "object",

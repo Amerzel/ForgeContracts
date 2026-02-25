@@ -1,4 +1,4 @@
-# Handoff Matrix — Gamedev Tool Pipeline
+# Handoff Matrix — ForgeContracts
 
 **Reference:** [VOCABULARY.md](./VOCABULARY.md) · [RFC_SHARED_CONTRACTS.md](../docs/RFC_SHARED_CONTRACTS.md) (Rev 4)
 

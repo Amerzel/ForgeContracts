@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gamedev-contracts.amerzel.dev/game_design.v1.schema.json",
+  "$id": "https://forge-contracts.amerzel.dev/game_design.v1.schema.json",
   "title": "game_design.v1",
   "description": "Crucible game-design document — the vocabulary authority and source of truth for material names, entity categories, constants, formulas, and all other design data that downstream tools consume.",
   "type": "object",

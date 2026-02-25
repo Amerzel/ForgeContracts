@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gamedev-contracts.amerzel.dev/terrain_pack.v1.schema.json",
+  "$id": "https://forge-contracts.amerzel.dev/terrain_pack.v1.schema.json",
   "title": "terrain_pack.v1",
   "description": "Authoritative schema for terrain asset packs. Defines the interchange format consumed by TerrainComposer, AssetGenerator, and other pipeline tools.",
   "type": "object",

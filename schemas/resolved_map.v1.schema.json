@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://gamedev-contracts.amerzel.dev/resolved_map.v1.schema.json",
+  "$id": "https://forge-contracts.amerzel.dev/resolved_map.v1.schema.json",
   "title": "resolved_map.v1",
   "description": "Concrete tile-layer map resolved from a semantic map and a terrain pack. Defines the TC→EC terrain data handoff.",
   "type": "object",
