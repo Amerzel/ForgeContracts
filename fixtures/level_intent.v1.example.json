@@ -9,13 +9,18 @@
       "id": "dense-woods",
       "terrain": "forest",
       "shape": { "type": "rect", "x": 1, "y": 1, "w": 99, "h": 65 },
-      "priority": 1
+      "priority": 1,
+      "style": "overgrown"
     },
     {
       "id": "clearings",
       "terrain": "grass",
-      "shape": { "type": "rect", "x": 75, "y": 2, "w": 74, "h": 49 },
-      "priority": 2
+      "shape": {
+        "type": "polygon",
+        "vertices": [[0.5, 0.02], [0.99, 0.02], [0.99, 0.5], [0.5, 0.5]]
+      },
+      "priority": 2,
+      "style": "organic"
     }
   ],
   "paths": [
@@ -24,7 +29,22 @@
       "terrain": "stone_path",
       "from": { "x": 0, "y": 50 },
       "to": { "x": 112, "y": 26 },
-      "width": 4
+      "width": 4,
+      "widthConstraints": { "min": 3, "max": 6 },
+      "connectivity": "open"
+    }
+  ],
+  "adjacencyRules": [
+    {
+      "fromTerrain": "forest",
+      "toTerrain": "grass",
+      "buffer": "dirt",
+      "bufferWidth": 2
+    },
+    {
+      "fromTerrain": "stone_path",
+      "toTerrain": "water",
+      "allowed": false
     }
   ],
   "constraints": {

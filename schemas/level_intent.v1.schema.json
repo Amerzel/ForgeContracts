@@ -63,6 +63,12 @@
         "$ref": "#/$defs/path"
       }
     },
+    "adjacencyRules": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/adjacencyRule"
+      }
+    },
     "constraints": {
       "type": "object",
       "additionalProperties": false,
@@ -133,7 +139,8 @@
         "type": {
           "type": "string",
           "enum": [
-            "rect"
+            "rect",
+            "polygon"
           ]
         },
         "x": {
@@ -151,6 +158,20 @@
         "h": {
           "type": "integer",
           "minimum": 1
+        },
+        "vertices": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "minItems": 2,
+            "maxItems": 2
+          }
         }
       },
       "allOf": [
@@ -168,6 +189,20 @@
               "y",
               "w",
               "h"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "polygon"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "vertices"
             ]
           }
         }
@@ -195,6 +230,15 @@
         },
         "priority": {
           "type": "integer"
+        },
+        "style": {
+          "type": "string",
+          "enum": [
+            "organic",
+            "ruined",
+            "manicured",
+            "overgrown"
+          ]
         }
       }
     },
@@ -226,6 +270,56 @@
         "width": {
           "type": "integer",
           "minimum": 1
+        },
+        "widthConstraints": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "min": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "connectivity": {
+          "type": "string",
+          "enum": [
+            "open",
+            "looped"
+          ]
+        }
+      }
+    },
+    "adjacencyRule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fromTerrain",
+        "toTerrain"
+      ],
+      "properties": {
+        "fromTerrain": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$"
+        },
+        "toTerrain": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$"
+        },
+        "buffer": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_-]*$"
+        },
+        "bufferWidth": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "allowed": {
+          "type": "boolean"
         }
       }
     }
