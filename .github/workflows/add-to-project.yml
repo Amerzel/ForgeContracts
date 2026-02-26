@@ -1,25 +1,73 @@
-name: Add issue to Forge project
+name: Sync with Forge project
 
 on:
   issues:
-    types: [opened]
+    types: [opened, closed, reopened, labeled]
+  pull_request_target:
+    types: [opened, closed]
 
 jobs:
-  add-to-project:
+  sync-project:
     runs-on: ubuntu-latest
     steps:
-      - name: Add to project and set fields
+      - name: Sync item to project
         env:
           GH_TOKEN: ${{ secrets.FORGE_PROJECT_TOKEN }}
         run: |
-          ITEM_ID=$(gh project item-add 1 --owner Amerzel --url "${{ github.event.issue.html_url }}" --format json | jq -r '.id')
+          PROJECT_ID="PVT_kwHOAAFQBc4BQKuo"
+          PROJECT_NUM=1
+          OWNER=Amerzel
+          STATUS_FIELD="PVTSSF_lAHOAAFQBc4BQKuozg-XZiE"
+          STATUS_TODO="f75ad846"
+          STATUS_DONE="98236657"
+          TOOL_FIELD="PVTSSF_lAHOAAFQBc4BQKuozg-XdOM"
+          TOOL_ID="9ffd6b4b"
+          PRIORITY_FIELD="PVTSSF_lAHOAAFQBc4BQKuozg-chQI"
 
-          # Status = Todo
-          gh project item-edit --project-id PVT_kwHOAAFQBc4BQKuo --id "$ITEM_ID" \
-            --field-id PVTSSF_lAHOAAFQBc4BQKuozg-XZiE \
-            --single-select-option-id f75ad846
+          # Determine the item URL
+          if [ "${{ github.event_name }}" = "issues" ]; then
+            ITEM_URL="${{ github.event.issue.html_url }}"
+          else
+            ITEM_URL="${{ github.event.pull_request.html_url }}"
+          fi
+
+          # Add item to project (idempotent — returns existing item if already added)
+          ITEM_ID=$(gh project item-add $PROJECT_NUM --owner $OWNER --url "$ITEM_URL" --format json | jq -r '.id')
 
           # Tool = ForgeContracts
-          gh project item-edit --project-id PVT_kwHOAAFQBc4BQKuo --id "$ITEM_ID" \
-            --field-id PVTSSF_lAHOAAFQBc4BQKuozg-XdOM \
-            --single-select-option-id 9ffd6b4b
+          gh project item-edit --project-id $PROJECT_ID --id "$ITEM_ID" \
+            --field-id $TOOL_FIELD --single-select-option-id $TOOL_ID
+
+          # Set status based on event
+          EVENT="${{ github.event.action }}"
+          if [ "$EVENT" = "closed" ]; then
+            # For PRs, only mark Done if merged
+            if [ "${{ github.event_name }}" = "pull_request_target" ] && [ "${{ github.event.pull_request.merged }}" != "true" ]; then
+              echo "PR closed without merge, skipping Done status"
+            else
+              gh project item-edit --project-id $PROJECT_ID --id "$ITEM_ID" \
+                --field-id $STATUS_FIELD --single-select-option-id $STATUS_DONE
+            fi
+          elif [ "$EVENT" = "reopened" ]; then
+            gh project item-edit --project-id $PROJECT_ID --id "$ITEM_ID" \
+              --field-id $STATUS_FIELD --single-select-option-id $STATUS_TODO
+          elif [ "$EVENT" = "opened" ]; then
+            gh project item-edit --project-id $PROJECT_ID --id "$ITEM_ID" \
+              --field-id $STATUS_FIELD --single-select-option-id $STATUS_TODO
+          fi
+
+          # Sync priority labels (issues only)
+          if [ "${{ github.event_name }}" = "issues" ]; then
+            LABELS=$(gh issue view "${{ github.event.issue.number }}" --repo "${{ github.repository }}" --json labels -q '.labels[].name')
+            PRIORITY_OPT=""
+            case "$LABELS" in
+              *"priority: critical"*) PRIORITY_OPT="0ee6c342" ;;
+              *"priority: high"*)     PRIORITY_OPT="af81ea97" ;;
+              *"priority: medium"*)   PRIORITY_OPT="1254d9f4" ;;
+              *"priority: low"*)      PRIORITY_OPT="b2e0a7e3" ;;
+            esac
+            if [ -n "$PRIORITY_OPT" ]; then
+              gh project item-edit --project-id $PROJECT_ID --id "$ITEM_ID" \
+                --field-id $PRIORITY_FIELD --single-select-option-id "$PRIORITY_OPT"
+            fi
+          fi
