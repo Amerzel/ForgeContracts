@@ -1,0 +1,57 @@
+{
+  "schema": "validation_report.v1",
+  "metadata": {
+    "toolVersion": "0.3.0",
+    "timestamp": "2026-03-01T12:00:00.000Z",
+    "seed": 42,
+    "intentHash": "sha256:abc123def456"
+  },
+  "metrics": {
+    "connectivity_score": 0.95,
+    "transition_gap_rate": 0.02,
+    "multi_junction_count": 1,
+    "dead_end_count": 0,
+    "region_coherence": 0.88
+  },
+  "regionBreakdowns": [
+    {
+      "regionId": "forest-clearing",
+      "metrics": {
+        "connectivity_score": 1.0,
+        "transition_gap_rate": 0.0,
+        "multi_junction_count": 0,
+        "dead_end_count": 0,
+        "region_coherence": 0.92
+      }
+    }
+  ],
+  "pathBreakdowns": [
+    {
+      "pathId": "main-trail",
+      "widthMin": 2,
+      "widthMax": 4,
+      "widthMean": 3.1,
+      "junctionCount": 1,
+      "junctionIds": ["junction-north"]
+    }
+  ],
+  "passed": true,
+  "thresholds": {
+    "connectivity_score": 0.8,
+    "transition_gap_rate": 0.1,
+    "multi_junction_count": 3,
+    "dead_end_count": 2,
+    "region_coherence": 0.7
+  },
+  "diagnostics": [
+    {
+      "severity": "info",
+      "message": "All regions connected."
+    },
+    {
+      "severity": "warn",
+      "message": "Multi-junction detected at junction-north.",
+      "context": { "junctionId": "junction-north", "degree": 4 }
+    }
+  ]
+}

@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forge-contracts.amerzel.dev/validation_report.v1.schema.json",
+  "title": "validation_report.v1",
+  "description": "TerrainComposer diagnostic output — per-metric scores, region/path breakdowns, pass/fail status, and diagnostic messages.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "metadata",
+    "metrics",
+    "passed",
+    "diagnostics"
+  ],
+  "properties": {
+    "schema": {
+      "const": "validation_report.v1"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "toolVersion",
+        "timestamp"
+      ],
+      "properties": {
+        "toolVersion": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "seed": {
+          "type": "integer"
+        },
+        "intentHash": {
+          "type": "string"
+        }
+      }
+    },
+    "metrics": {
+      "$ref": "#/$defs/metricScores"
+    },
+    "regionBreakdowns": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/regionBreakdown"
+      }
+    },
+    "pathBreakdowns": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/pathBreakdown"
+      }
+    },
+    "passed": {
+      "type": "boolean"
+    },
+    "thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "connectivity_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "transition_gap_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "multi_junction_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "dead_end_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "region_coherence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "diagnostics": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/diagnosticMessage"
+      }
+    }
+  },
+  "$defs": {
+    "metricScores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "connectivity_score",
+        "transition_gap_rate",
+        "multi_junction_count",
+        "dead_end_count",
+        "region_coherence"
+      ],
+      "properties": {
+        "connectivity_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "transition_gap_rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "multi_junction_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "dead_end_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "region_coherence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "regionBreakdown": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "regionId",
+        "metrics"
+      ],
+      "properties": {
+        "regionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "metrics": {
+          "$ref": "#/$defs/metricScores"
+        }
+      }
+    },
+    "pathBreakdown": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pathId"
+      ],
+      "properties": {
+        "pathId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "widthMin": {
+          "type": "number",
+          "minimum": 0
+        },
+        "widthMax": {
+          "type": "number",
+          "minimum": 0
+        },
+        "widthMean": {
+          "type": "number",
+          "minimum": 0
+        },
+        "junctionCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "junctionIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "diagnosticMessage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "severity",
+        "message"
+      ],
+      "properties": {
+        "severity": {
+          "type": "string",
+          "enum": [
+            "info",
+            "warn",
+            "error"
+          ]
+        },
+        "message": {
+          "type": "string"
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}
