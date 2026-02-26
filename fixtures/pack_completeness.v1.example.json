@@ -1,0 +1,28 @@
+{
+  "schema": "pack_completeness.v1",
+  "producer": {
+    "tool": "AssetGenerator",
+    "version": "0.2.0",
+    "generatedAt": "2026-03-01T14:00:00.000Z"
+  },
+  "pack": {
+    "name": "terrain-pack-ashwood",
+    "version": "1.0.0",
+    "tileSize": 16,
+    "materialCount": 3
+  },
+  "coverageMatrix": [
+    { "materialA": "dirt", "materialB": "grass", "covered": true, "tileCount": 2 },
+    { "materialA": "dirt", "materialB": "water", "covered": true, "tileCount": 1 },
+    { "materialA": "grass", "materialB": "water", "covered": true, "tileCount": 1 }
+  ],
+  "missingCases": [
+    {
+      "materialA": "grass",
+      "materialB": "water",
+      "priority": 0.9,
+      "reason": "Only 1 of 15 marching-squares cases covered for grass/water boundary."
+    }
+  ],
+  "completenessPercent": 66.7
+}

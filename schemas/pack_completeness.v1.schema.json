@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forge-contracts.amerzel.dev/pack_completeness.v1.schema.json",
+  "title": "pack_completeness.v1",
+  "description": "Asset pack coverage report — documents which material-pair transitions exist, which are missing, and overall completeness.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "pack",
+    "coverageMatrix",
+    "missingCases",
+    "completenessPercent"
+  ],
+  "properties": {
+    "schema": {
+      "const": "pack_completeness.v1"
+    },
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tool": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "tool",
+        "version"
+      ]
+    },
+    "pack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "tileSize",
+        "materialCount"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string"
+        },
+        "tileSize": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "materialCount": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "coverageMatrix": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/coverageEntry"
+      }
+    },
+    "missingCases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/missingCase"
+      }
+    },
+    "completenessPercent": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    }
+  },
+  "$defs": {
+    "coverageEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "materialA",
+        "materialB",
+        "covered"
+      ],
+      "properties": {
+        "materialA": {
+          "type": "string",
+          "minLength": 1
+        },
+        "materialB": {
+          "type": "string",
+          "minLength": 1
+        },
+        "covered": {
+          "type": "boolean"
+        },
+        "tileCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "missingCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "materialA",
+        "materialB",
+        "priority"
+      ],
+      "properties": {
+        "materialA": {
+          "type": "string",
+          "minLength": 1
+        },
+        "materialB": {
+          "type": "string",
+          "minLength": 1
+        },
+        "priority": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
