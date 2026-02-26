@@ -1,0 +1,25 @@
+name: Add issue to Forge project
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  add-to-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add to project and set fields
+        env:
+          GH_TOKEN: ${{ secrets.FORGE_PROJECT_TOKEN }}
+        run: |
+          ITEM_ID=$(gh project item-add 1 --owner Amerzel --url "${{ github.event.issue.html_url }}" --format json | jq -r '.id')
+
+          # Status = Todo
+          gh project item-edit --project-id PVT_kwHOAAFQBc4BQKuo --id "$ITEM_ID" \
+            --field-id PVTSSF_lAHOAAFQBc4BQKuozg-XZiE \
+            --single-select-option-id f75ad846
+
+          # Tool = ForgeContracts
+          gh project item-edit --project-id PVT_kwHOAAFQBc4BQKuo --id "$ITEM_ID" \
+            --field-id PVTSSF_lAHOAAFQBc4BQKuozg-XdOM \
+            --single-select-option-id 9ffd6b4b
