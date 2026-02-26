@@ -51,6 +51,8 @@
     "semanticMapRef": "ashwood-forest_semantic.v1.json",
     "levelIntentRef": "ashwood-forest_intent.v1.json"
   },
+  "consumed_fields": ["regions", "paths", "style_hints.boundary_softening"],
+  "ignored_fields": ["style_hints.palette_override"],
   "meta": {
     "coordSystem": "top-left",
     "tileSize": 16,

@@ -93,6 +93,22 @@
     "provenance": {
       "$ref": "#/$defs/provenance"
     },
+    "consumed_fields": {
+      "type": "array",
+      "description": "Intent fields that were actually used during generation. Supports ForgeDirector ↔ ForgeTerrain telemetry feedback loop.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "ignored_fields": {
+      "type": "array",
+      "description": "Intent fields that were present but not used during generation.",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
     "meta": {
       "type": "object",
       "additionalProperties": false,
