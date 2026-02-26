@@ -1,0 +1,37 @@
+{
+  "schema": "remediation_recipe.v1",
+  "producer": {
+    "tool": "TerrainComposer",
+    "version": "0.3.0",
+    "generatedAt": "2026-03-01T12:05:00.000Z"
+  },
+  "recipes": [
+    {
+      "issueType": "DISCONNECTED_REGION",
+      "severity": "error",
+      "description": "Region 'lake-island' is not reachable from the main connected component.",
+      "suggestedAction": "Add a path or bridge connecting 'lake-island' to an adjacent region.",
+      "affectedRegions": ["lake-island"],
+      "affectedPaths": [],
+      "confidence": 0.92
+    },
+    {
+      "issueType": "MISSING_TRANSITION",
+      "severity": "warn",
+      "description": "No transition tile exists for the dirt-to-water boundary.",
+      "suggestedAction": "Generate marching-squares transition tiles for the dirt/water material pair.",
+      "affectedRegions": ["riverbank", "mudflat"],
+      "affectedPaths": [],
+      "confidence": 0.85
+    },
+    {
+      "issueType": "DEAD_END",
+      "severity": "info",
+      "description": "Path 'side-trail' terminates without connecting to a region or another path.",
+      "suggestedAction": "Extend 'side-trail' to reach 'forest-clearing' or mark it as intentional.",
+      "affectedRegions": [],
+      "affectedPaths": ["side-trail"],
+      "confidence": 0.78
+    }
+  ]
+}

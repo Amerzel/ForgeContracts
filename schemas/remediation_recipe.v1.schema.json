@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forge-contracts.amerzel.dev/remediation_recipe.v1.schema.json",
+  "title": "remediation_recipe.v1",
+  "description": "Machine-readable fix suggestions for terrain validation issues — each recipe describes an issue, suggested action, and affected regions/paths.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "recipes"
+  ],
+  "properties": {
+    "schema": {
+      "const": "remediation_recipe.v1"
+    },
+    "producer": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "tool": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "tool",
+        "version"
+      ]
+    },
+    "recipes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/recipe"
+      }
+    }
+  },
+  "$defs": {
+    "recipe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "issueType",
+        "severity",
+        "description",
+        "suggestedAction",
+        "confidence"
+      ],
+      "properties": {
+        "issueType": {
+          "type": "string",
+          "enum": [
+            "DISCONNECTED_REGION",
+            "MISSING_TRANSITION",
+            "MULTI_JUNCTION",
+            "DEAD_END",
+            "WIDTH_VIOLATION"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "info",
+            "warn",
+            "error"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "suggestedAction": {
+          "type": "string"
+        },
+        "affectedRegions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "affectedPaths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    }
+  }
+}
