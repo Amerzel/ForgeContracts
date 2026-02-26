@@ -13,6 +13,16 @@ function getRegistry() {
   return _registry;
 }
 
+// Normalize material ID to lowercase for case-insensitive lookup
+function normalize(id) {
+  const lower = id.toLowerCase();
+  if (lower in getRegistry().materials) return lower;
+  // Try snake_case conversion (e.g. "Water_Deep" → "water_deep")
+  const snake = id.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase();
+  if (snake in getRegistry().materials) return snake;
+  return lower;
+}
+
 /**
  * Get all material IDs as an array.
  * @returns {string[]}
@@ -27,7 +37,7 @@ export function getAllMaterialIds() {
  * @returns {{ displayName: string, category: string, movement: string, path: boolean, devColor: string } | undefined}
  */
 export function getMaterial(id) {
-  return getRegistry().materials[id];
+  return getRegistry().materials[normalize(id)];
 }
 
 /**
@@ -52,7 +62,7 @@ export function getCategories() {
  * @returns {boolean}
  */
 export function isMaterial(id) {
-  return id in getRegistry().materials;
+  return normalize(id) in getRegistry().materials;
 }
 
 /**
@@ -61,7 +71,7 @@ export function isMaterial(id) {
  * @returns {"normal" | "slow" | "none" | undefined}
  */
 export function getMovement(id) {
-  return getRegistry().materials[id]?.movement;
+  return getRegistry().materials[normalize(id)]?.movement;
 }
 
 /**
@@ -70,7 +80,7 @@ export function getMovement(id) {
  * @returns {boolean}
  */
 export function isWalkable(id) {
-  const m = getRegistry().materials[id];
+  const m = getRegistry().materials[normalize(id)];
   return m ? m.movement !== 'none' : false;
 }
 
@@ -80,7 +90,7 @@ export function isWalkable(id) {
  * @returns {boolean}
  */
 export function isPath(id) {
-  return getRegistry().materials[id]?.path === true;
+  return getRegistry().materials[normalize(id)]?.path === true;
 }
 
 /**
@@ -89,7 +99,7 @@ export function isPath(id) {
  * @returns {string | undefined} Hex color string (e.g. "#4A7C2E")
  */
 export function getDevColor(id) {
-  return getRegistry().materials[id]?.devColor;
+  return getRegistry().materials[normalize(id)]?.devColor;
 }
 
 /**
