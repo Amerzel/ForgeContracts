@@ -1,0 +1,65 @@
+{
+  "schema": "material_registry.v1",
+  "version": "1.0.0",
+  "categories": {
+    "natural":     { "displayName": "Natural",     "description": "Earth, vegetation, and organic terrain" },
+    "water":       { "displayName": "Water",        "description": "Liquid and wet surfaces" },
+    "constructed": { "displayName": "Constructed",  "description": "Man-made surfaces, paths, and structures" },
+    "cave":        { "displayName": "Cave",         "description": "Underground and subterranean terrain" },
+    "desert":      { "displayName": "Desert",       "description": "Arid and sandy terrain" },
+    "tundra":      { "displayName": "Tundra",       "description": "Frozen and arctic terrain" },
+    "volcanic":    { "displayName": "Volcanic",     "description": "Fire, magma, and charred terrain" },
+    "corrupted":   { "displayName": "Corrupted",    "description": "Magically tainted or blighted terrain" }
+  },
+  "materials": {
+
+    "grass":          { "displayName": "Grass",           "category": "natural",     "movement": "normal", "path": false, "devColor": "#4A7C2E" },
+    "tall_grass":     { "displayName": "Tall Grass",      "category": "natural",     "movement": "slow",   "path": false, "devColor": "#3D6B22" },
+    "dirt":           { "displayName": "Dirt",             "category": "natural",     "movement": "normal", "path": false, "devColor": "#8B6914" },
+    "mud":            { "displayName": "Mud",              "category": "natural",     "movement": "slow",   "path": false, "devColor": "#5C4A1E" },
+    "sand":           { "displayName": "Sand",             "category": "natural",     "movement": "slow",   "path": false, "devColor": "#D4B060" },
+    "rock":           { "displayName": "Rock",             "category": "natural",     "movement": "none",   "path": false, "devColor": "#6B6B6B" },
+    "gravel":         { "displayName": "Gravel",           "category": "natural",     "movement": "normal", "path": false, "devColor": "#8A8070" },
+    "clay":           { "displayName": "Clay",             "category": "natural",     "movement": "normal", "path": false, "devColor": "#A06040" },
+    "forest":         { "displayName": "Forest",           "category": "natural",     "movement": "slow",   "path": false, "devColor": "#1B4D1B" },
+    "dense_forest":   { "displayName": "Dense Forest",     "category": "natural",     "movement": "slow",   "path": false, "devColor": "#0F3810" },
+    "dead_forest":    { "displayName": "Dead Forest",      "category": "natural",     "movement": "slow",   "path": false, "devColor": "#5A5040" },
+
+    "water":          { "displayName": "Water",            "category": "water",       "movement": "none",   "path": false, "devColor": "#2E5FA1" },
+    "water_shallow":  { "displayName": "Shallow Water",    "category": "water",       "movement": "none",   "path": false, "devColor": "#5B9BD5" },
+    "swamp":          { "displayName": "Swamp",            "category": "water",       "movement": "slow",   "path": false, "devColor": "#3D5A2A" },
+    "frozen_water":   { "displayName": "Frozen Water",     "category": "water",       "movement": "none",   "path": false, "devColor": "#A8D0E8" },
+
+    "stone_path":     { "displayName": "Stone Path",       "category": "constructed", "movement": "normal", "path": true,  "devColor": "#A0A0A0" },
+    "cobblestone":    { "displayName": "Cobblestone",       "category": "constructed", "movement": "normal", "path": true,  "devColor": "#787878" },
+    "wood_plank":     { "displayName": "Wood Plank",       "category": "constructed", "movement": "normal", "path": true,  "devColor": "#A0784A" },
+    "brick":          { "displayName": "Brick",             "category": "constructed", "movement": "normal", "path": true,  "devColor": "#8B4513" },
+    "stone_ruins":    { "displayName": "Stone Ruins",       "category": "constructed", "movement": "slow",   "path": false, "devColor": "#7A6E5A" },
+    "rubble":         { "displayName": "Rubble",            "category": "constructed", "movement": "slow",   "path": false, "devColor": "#6A6050" },
+    "stone_floor":    { "displayName": "Stone Floor",       "category": "constructed", "movement": "normal", "path": false, "devColor": "#909090" },
+    "wood_floor":     { "displayName": "Wood Floor",        "category": "constructed", "movement": "normal", "path": false, "devColor": "#B8925A" },
+
+    "cave_floor":     { "displayName": "Cave Floor",        "category": "cave",       "movement": "normal", "path": false, "devColor": "#3D2E1F" },
+    "cave_rubble":    { "displayName": "Cave Rubble",       "category": "cave",       "movement": "slow",   "path": false, "devColor": "#5C4A3A" },
+    "cave_ember":     { "displayName": "Ember Vein",        "category": "cave",       "movement": "normal", "path": false, "devColor": "#8B2500" },
+    "cave_crystal":   { "displayName": "Crystal Cave",      "category": "cave",       "movement": "normal", "path": false, "devColor": "#6A5ACD" },
+    "cave_moss":      { "displayName": "Mossy Cave",        "category": "cave",       "movement": "normal", "path": false, "devColor": "#2E5A2E" },
+
+    "sandstone":      { "displayName": "Sandstone",         "category": "desert",     "movement": "normal", "path": false, "devColor": "#C4A35A" },
+    "cracked_earth":  { "displayName": "Cracked Earth",     "category": "desert",     "movement": "normal", "path": false, "devColor": "#A08050" },
+    "dune":           { "displayName": "Sand Dune",          "category": "desert",     "movement": "slow",   "path": false, "devColor": "#E8D8A0" },
+
+    "snow":           { "displayName": "Snow",               "category": "tundra",     "movement": "slow",   "path": false, "devColor": "#E8F0F5" },
+    "ice":            { "displayName": "Ice",                "category": "tundra",     "movement": "none",   "path": false, "devColor": "#A0D0E8" },
+    "permafrost":     { "displayName": "Permafrost",         "category": "tundra",     "movement": "normal", "path": false, "devColor": "#6A8A9A" },
+
+    "volcanic_rock":  { "displayName": "Volcanic Rock",     "category": "volcanic",   "movement": "normal", "path": false, "devColor": "#3A2A2A" },
+    "ash":            { "displayName": "Ash",                "category": "volcanic",   "movement": "slow",   "path": false, "devColor": "#8A8080" },
+    "lava":           { "displayName": "Lava",               "category": "volcanic",   "movement": "none",   "path": false, "devColor": "#C84820" },
+    "scorched_earth": { "displayName": "Scorched Earth",     "category": "volcanic",   "movement": "normal", "path": false, "devColor": "#4A2018" },
+
+    "corrupted_ground": { "displayName": "Corrupted Ground", "category": "corrupted",  "movement": "slow",   "path": false, "devColor": "#382850" },
+    "toxic_marsh":      { "displayName": "Toxic Marsh",      "category": "corrupted",  "movement": "none",   "path": false, "devColor": "#488038" },
+    "blighted_soil":    { "displayName": "Blighted Soil",    "category": "corrupted",  "movement": "slow",   "path": false, "devColor": "#5A4870" }
+  }
+}

@@ -6,12 +6,15 @@
   "exports": {
     "./schemas/*": "./schemas/*",
     "./fixtures/*": "./fixtures/*",
+    "./data/*": "./data/*",
     "./validate": "./src/validate.js",
+    "./materials": "./src/materials.js",
     "./types": "./dist/types/index.d.ts"
   },
   "files": [
     "schemas",
     "fixtures",
+    "data",
     "src",
     "dist/types",
     "VOCABULARY.md",

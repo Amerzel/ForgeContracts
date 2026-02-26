@@ -1,0 +1,16 @@
+{
+  "schema": "material_registry.v1",
+  "version": "1.0.0",
+  "categories": {
+    "natural":     { "displayName": "Natural",     "description": "Earth, vegetation, and organic terrain" },
+    "water":       { "displayName": "Water",        "description": "Liquid and wet surfaces" },
+    "constructed": { "displayName": "Constructed",  "description": "Man-made surfaces, paths, and structures" }
+  },
+  "materials": {
+    "grass":          { "displayName": "Grass",          "category": "natural",     "movement": "normal", "path": false, "devColor": "#4A7C2E" },
+    "forest":         { "displayName": "Forest",         "category": "natural",     "movement": "slow",   "path": false, "devColor": "#1B4D1B" },
+    "dirt":           { "displayName": "Dirt",            "category": "natural",     "movement": "normal", "path": false, "devColor": "#8B6914" },
+    "water_shallow":  { "displayName": "Shallow Water",   "category": "water",       "movement": "none",   "path": false, "devColor": "#5B9BD5" },
+    "stone_path":     { "displayName": "Stone Path",      "category": "constructed", "movement": "normal", "path": true,  "devColor": "#A0A0A0" }
+  }
+}

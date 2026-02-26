@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://forge-contracts.amerzel.dev/material_registry.v1.schema.json",
+  "title": "material_registry.v1",
+  "description": "Shared material registry defining the game world's terrain vocabulary. All tools validate material references against this registry.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "categories",
+    "materials"
+  ],
+  "properties": {
+    "schema": {
+      "const": "material_registry.v1",
+      "description": "Document identity discriminator per VOCABULARY.md §1."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version of the registry data."
+    },
+    "categories": {
+      "type": "object",
+      "description": "Environment categories that materials belong to. Keys are category IDs used in material entries.",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[a-z][a-z0-9_-]*$": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["displayName", "description"],
+          "properties": {
+            "displayName": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Human-readable category name."
+            },
+            "description": {
+              "type": "string",
+              "minLength": 1,
+              "description": "What this category covers."
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "materials": {
+      "type": "object",
+      "description": "Terrain materials keyed by material ID. This is the canonical set of material identifiers for the game world.",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[a-z][a-z0-9_]*$": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["displayName", "category", "movement", "path", "devColor"],
+          "properties": {
+            "displayName": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Human-readable material name for UI and reports."
+            },
+            "category": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_-]*$",
+              "description": "Category ID. Must match a key in the top-level categories object."
+            },
+            "movement": {
+              "type": "string",
+              "enum": ["normal", "slow", "none"],
+              "description": "Movement classification. normal = full speed, slow = reduced speed, none = impassable."
+            },
+            "path": {
+              "type": "boolean",
+              "description": "True if this is a dedicated travel surface (road, path, bridge)."
+            },
+            "devColor": {
+              "type": "string",
+              "pattern": "^#[0-9A-Fa-f]{6}$",
+              "description": "Hex color for dev/colorblock rendering and Pipeline Inspector fallback."
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
