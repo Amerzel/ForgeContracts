@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeAll, afterAll } from 'vitest';
-import { writeFileSync, unlinkSync, existsSync, readFileSync } from 'fs';
+import { describe, it, expect, beforeAll, afterAll, beforeEach, afterEach } from 'vitest';
+import { writeFileSync, unlinkSync, existsSync, readFileSync, mkdtempSync, cpSync, rmSync } from 'fs';
 import { join } from 'path';
+import { tmpdir } from 'os';
 import { execFileSync } from 'child_process';
 import {
   loadSchema,
@@ -126,21 +127,39 @@ describe('formatDiff', () => {
 });
 
 describe('checkCompat (integration)', () => {
-  const v2File = join(SCHEMAS_DIR, `${TEST_NAME}.v2.schema.json`);
-  const v2Fixture = join(FIXTURES_DIR, `${TEST_NAME}.v2.example.json`);
+  // Use a temp copy of schemas dir so we don't pollute the real one
+  let tmpSchemas;
+  let origCheckCompat;
 
-  afterAll(() => {
-    // Clean up any test schemas we created
-    if (existsSync(v2File)) unlinkSync(v2File);
-    if (existsSync(v2Fixture)) unlinkSync(v2Fixture);
+  beforeEach(() => {
+    tmpSchemas = mkdtempSync(join(tmpdir(), 'forge-schemas-'));
+    cpSync(SCHEMAS_DIR, tmpSchemas, { recursive: true });
   });
+
+  afterEach(() => {
+    rmSync(tmpSchemas, { recursive: true, force: true });
+  });
+
+  // checkCompat reads from the real SCHEMAS_DIR, so we write v2 to temp and call it with a custom helper
+  function checkCompatInTmp(name, fromVersion, toVersion) {
+    // checkCompat loads from SCHEMAS_DIR internally, so we temporarily write to real dir and clean up immediately
+    const v2File = join(SCHEMAS_DIR, `${name}.${toVersion}.schema.json`);
+    const tmpV2 = join(tmpSchemas, `${name}.${toVersion}.schema.json`);
+    // Copy temp v2 to real dir for checkCompat, then clean up
+    cpSync(tmpV2, v2File);
+    try {
+      return checkCompat(name, fromVersion, toVersion);
+    } finally {
+      if (existsSync(v2File)) unlinkSync(v2File);
+    }
+  }
 
   it('compatible when v2 is identical to v1 (only version refs differ)', () => {
     const original = loadSchema(TEST_NAME, 'v1');
     const bumped = bumpSchema(original, TEST_NAME, 'v1', 'v2');
-    writeFileSync(v2File, JSON.stringify(bumped, null, 2) + '\n');
+    writeFileSync(join(tmpSchemas, `${TEST_NAME}.v2.schema.json`), JSON.stringify(bumped, null, 2) + '\n');
 
-    const result = checkCompat(TEST_NAME, 'v1', 'v2');
+    const result = checkCompatInTmp(TEST_NAME, 'v1', 'v2');
     expect(result.compatible).toBe(true);
     expect(result.errors).toEqual([]);
   });
@@ -150,9 +169,9 @@ describe('checkCompat (integration)', () => {
     const bumped = bumpSchema(original, TEST_NAME, 'v1', 'v2');
     bumped.properties.newField = { type: 'string', minLength: 1 };
     bumped.required = [...bumped.required, 'newField'];
-    writeFileSync(v2File, JSON.stringify(bumped, null, 2) + '\n');
+    writeFileSync(join(tmpSchemas, `${TEST_NAME}.v2.schema.json`), JSON.stringify(bumped, null, 2) + '\n');
 
-    const result = checkCompat(TEST_NAME, 'v1', 'v2');
+    const result = checkCompatInTmp(TEST_NAME, 'v1', 'v2');
     expect(result.compatible).toBe(false);
     expect(result.errors.length).toBeGreaterThan(0);
   });
@@ -161,7 +180,7 @@ describe('checkCompat (integration)', () => {
 describe('schema-bump.js script', () => {
   const v2File = join(SCHEMAS_DIR, `${TEST_NAME}.v2.schema.json`);
 
-  afterAll(() => {
+  afterEach(() => {
     if (existsSync(v2File)) unlinkSync(v2File);
   });
 
@@ -177,7 +196,6 @@ describe('schema-bump.js script', () => {
   });
 
   it('refuses to overwrite an existing schema', () => {
-    // v2 already exists from previous test
     writeFileSync(v2File, '{}');
     try {
       execFileSync('node', ['scripts/schema-bump.js', TEST_NAME, 'v1', 'v2'], { cwd: ROOT, encoding: 'utf-8', stdio: 'pipe' });

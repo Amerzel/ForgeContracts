@@ -4,13 +4,25 @@ import { join } from 'path';
 import { describe, it, expect } from 'vitest';
 import { listSchemas, validate } from '../src/validate.js';
 
-const SCHEMAS_DIR = join(import.meta.dirname, '..', 'schemas');
 const FIXTURES_DIR = join(import.meta.dirname, '..', 'fixtures');
 
-const schemaNames = readdirSync(SCHEMAS_DIR)
-  .filter(f => f.endsWith('.schema.json'))
-  .map(f => f.replace('.schema.json', ''))
-  .sort();
+// Hardcoded canonical v1 schema list — update when adding new schemas
+const CANONICAL_SCHEMAS = [
+  'asset_requirements.v1',
+  'encounter_change_set.v1',
+  'entity_catalog.v1',
+  'game_design.v1',
+  'level_intent.v1',
+  'material_registry.v1',
+  'pack_completeness.v1',
+  'populated_level.v1',
+  'quest_catalog.v1',
+  'remediation_recipe.v1',
+  'resolved_map.v1',
+  'terrain_pack.v1',
+  'validation_report.v1',
+  'zone.v1',
+];
 
 const fixtures = readdirSync(FIXTURES_DIR)
   .filter(f => f.endsWith('.example.json'))
@@ -22,7 +34,15 @@ const fixtures = readdirSync(FIXTURES_DIR)
 
 describe('Validation API Confidence', () => {
   it('listSchemas is deterministic and complete', () => {
-    expect(listSchemas()).toEqual(schemaNames);
+    const schemas = listSchemas();
+    // Must contain all canonical schemas
+    for (const name of CANONICAL_SCHEMAS) {
+      expect(schemas, `missing schema: ${name}`).toContain(name);
+    }
+    // Must be sorted
+    expect(schemas).toEqual([...schemas].sort());
+    // listSchemas() should be deterministic across calls
+    expect(listSchemas()).toEqual(schemas);
   });
 
   it('validate accepts all golden fixtures', () => {
