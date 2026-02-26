@@ -38,3 +38,43 @@ Which Forge tools consume which `@forge/contracts` schemas, and at which version
 - All schemas follow `{name}.v{major}` naming (e.g., `resolved_map.v1`).
 - Breaking changes require a new major version (`v2`); the old version remains available until all consumers migrate.
 - Each document self-identifies via a `"schema"` field whose value matches the schema name (e.g., `"schema": "resolved_map.v1"`).
+
+## Migration Workflow
+
+When a schema needs a breaking change, use the schema evolution tooling:
+
+### 1. Bump — Create a new version
+
+```bash
+node scripts/schema-bump.js resolved_map v1 v2
+```
+
+This copies the v1 schema to v2, updating `$id`, `title`, and the `schema` const field. Edit the new file to apply your changes, then create a matching fixture.
+
+### 2. Diff — Review what changed
+
+```bash
+node scripts/schema-diff.js resolved_map v1 v2
+```
+
+Shows added/removed properties, type changes, and new required fields. Classifies the change as **ADDITIVE** (safe) or **BREAKING**.
+
+### 3. Compat Check — Validate backward compatibility
+
+```bash
+node scripts/schema-compat-check.js resolved_map v1 v2
+```
+
+Validates that v1 fixtures pass the v2 schema (with the `schema` field patched). Exit code 0 means compatible; exit code 1 means breaking. Use this in CI to gate releases.
+
+### Checklist for a major version bump
+
+1. `node scripts/schema-bump.js <name> v1 v2`
+2. Edit the new schema with your changes
+3. Create `fixtures/<name>.v2.example.json`
+4. `node scripts/schema-diff.js <name> v1 v2` — review the diff
+5. `node scripts/schema-compat-check.js <name> v1 v2` — verify compatibility expectations
+6. `npm run generate-types` — regenerate TypeScript types
+7. `npm test` — ensure all tests pass
+8. Update this matrix with the new version row
+9. Notify downstream consumers (see Tool → Schema Matrix above)
