@@ -11,6 +11,13 @@
     "./materials": "./src/materials.js",
     "./types": "./dist/types/index.d.ts"
   },
+  "typesVersions": {
+    "*": {
+      "materials": ["src/materials.d.ts"],
+      "validate": ["src/validate.d.ts"],
+      "types": ["dist/types/index.d.ts"]
+    }
+  },
   "files": [
     "schemas",
     "fixtures",
