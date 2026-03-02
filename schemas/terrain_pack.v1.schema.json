@@ -210,6 +210,7 @@
             "type": "string",
             "enum": [
               "marching-squares",
+              "blob-47",
               "wang",
               "rule"
             ]
@@ -274,6 +275,15 @@
           {
             "if": {
               "properties": { "model": { "const": "marching-squares" } },
+              "required": ["model"]
+            },
+            "then": {
+              "required": ["case", "cornerBits"]
+            }
+          },
+          {
+            "if": {
+              "properties": { "model": { "const": "blob-47" } },
               "required": ["model"]
             },
             "then": {
