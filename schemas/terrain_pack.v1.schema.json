@@ -257,6 +257,17 @@
             "type": "string",
             "description": "Optional theme membership. Only selected when the composer has chosen this theme for the boundary pair. Omit for theme-less tiles (always eligible regardless of theme).",
             "minLength": 1
+          },
+          "renderOrder": {
+            "type": "integer",
+            "description": "Stacking order within a boundary+case group. Base tiles use 0; effect overlays use 10, 20, 30, etc. Consumers that do not understand renderOrder SHOULD treat all transitions as renderOrder 0 (backward compatible). Omit or set to 0 for base tiles.",
+            "default": 0,
+            "minimum": 0
+          },
+          "layerTag": {
+            "type": "string",
+            "description": "Human-readable sub-layer tag identifying the output tilemap layer for this transition overlay (e.g. \"outline\", \"cliff\", \"shadow\"). This is a sub-layer identifier within the transition layer, distinct from the canonical layer names in VOCABULARY.md §5. Consumers that do not understand layerTag ignore it.",
+            "minLength": 1
           }
         },
         "allOf": [

@@ -1,0 +1,8 @@
+{
+  "schema": "composition_report.v1",
+  "producer": {
+    "tool": "ForgeTileset",
+    "version": "0.1.0",
+    "generatedAt": "2026-03-02T00:00:00.000Z"
+  }
+}

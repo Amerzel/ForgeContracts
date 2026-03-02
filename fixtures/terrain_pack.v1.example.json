@@ -52,7 +52,19 @@
       "case": 6,
       "cornerBits": "0110",
       "tileId": "grass_water_ms0110",
-      "transform": "none"
+      "transform": "none",
+      "renderOrder": 0
+    },
+    {
+      "id": "grass-water-ms01-outline",
+      "boundary": ["grass", "water"],
+      "model": "marching-squares",
+      "case": 6,
+      "cornerBits": "0110",
+      "tileId": "grass_water_ms0110_outline",
+      "transform": "none",
+      "renderOrder": 10,
+      "layerTag": "outline"
     }
   ],
   "variants": [
