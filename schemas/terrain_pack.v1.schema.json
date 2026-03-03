@@ -172,6 +172,50 @@
                 "x": { "type": "integer" },
                 "y": { "type": "integer" }
               }
+            },
+            "provenance": {
+              "type": "object",
+              "description": "Metadata describing how this tile was produced. Used by downstream tools (e.g. Terrain Workbench) for tile provenance display.",
+              "additionalProperties": false,
+              "properties": {
+                "kind": {
+                  "type": "string",
+                  "enum": ["fill", "transition", "effect"],
+                  "description": "What category of tile this is."
+                },
+                "msCase": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Marching-squares or blob case ID that produced this tile."
+                },
+                "pair": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "minItems": 2,
+                  "maxItems": 2,
+                  "description": "Material boundary pair [base, top]."
+                },
+                "effectType": {
+                  "type": "string",
+                  "description": "Effect renderer type (e.g. outline, cliff-face)."
+                },
+                "matchType": {
+                  "type": "string",
+                  "enum": ["exact", "fallback", "generated"],
+                  "description": "How the tile was resolved: exact match, fallback, or generated."
+                },
+                "variantIndex": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Index of this variant within its material's variant set."
+                },
+                "variantCount": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "Total number of variants for this material."
+                }
+              },
+              "required": ["kind", "matchType"]
             }
           }
         }
