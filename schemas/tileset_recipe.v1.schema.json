@@ -2,24 +2,151 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://forge-contracts.amerzel.dev/tileset_recipe.v1.schema.json",
   "title": "tileset_recipe.v1",
-  "description": "Placeholder schema for ForgeTileset input recipe format. Will be finalized during ForgeTileset Phase 1/2.",
+  "description": "ForgeTileset input recipe. Declares materials, adjacency pairs, style params, effects, and atlas config.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema"],
+  "required": ["schema", "recipeId", "tileSize", "materials", "adjacency", "style", "variants", "atlas"],
   "properties": {
     "schema": {
       "const": "tileset_recipe.v1",
       "description": "Document identity discriminator per VOCABULARY.md §1."
     },
-    "producer": {
+    "recipeId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique recipe identifier. Becomes packId in output."
+    },
+    "version": {
+      "type": "string",
+      "default": "1.0.0",
+      "description": "Recipe version, passed through to terrain_pack.v1 output."
+    },
+    "tileSize": {
+      "type": "integer",
+      "minimum": 8,
+      "description": "Tile dimensions in pixels (tiles are square)."
+    },
+    "meta": {
       "type": "object",
-      "description": "Stamp identifying the tool that generated this document (VOCABULARY.md §1).",
-      "additionalProperties": false,
-      "required": ["tool", "version"],
       "properties": {
-        "tool": { "type": "string", "minLength": 1 },
-        "version": { "type": "string", "minLength": 1 },
-        "generatedAt": { "type": "string", "format": "date-time" }
+        "description": { "type": "string" },
+        "author": { "type": "string" }
+      },
+      "additionalProperties": false,
+      "description": "Optional metadata passed through to output manifest."
+    },
+    "materials": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "fill", "colorMap", "elevation"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "fill": { "type": "string", "minLength": 1, "description": "Path to fill texture PNG (relative to recipe or absolute)." },
+          "colorMap": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$", "description": "Hex color for semantic map rendering." },
+          "elevation": { "type": "integer", "minimum": 0, "description": "Stacking order. Must be unique across materials." }
+        }
+      }
+    },
+    "adjacency": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["boundary"],
+        "additionalProperties": false,
+        "properties": {
+          "boundary": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 2,
+            "maxItems": 2,
+            "description": "Alphabetically sorted material pair."
+          },
+          "maskModel": {
+            "type": "string",
+            "enum": ["ms-14", "blob-47"],
+            "default": "ms-14",
+            "description": "Mask model for this pair. ms-14 (14 marching-squares cases) or blob-47 (47 blob cases)."
+          }
+        }
+      }
+    },
+    "style": {
+      "type": "object",
+      "required": ["noiseOctaves", "noiseAmplitude", "noiseFrequency", "antiAlias"],
+      "additionalProperties": false,
+      "properties": {
+        "noiseOctaves": { "type": "integer", "minimum": 1, "description": "Perlin octaves for edge perturbation." },
+        "noiseAmplitude": { "type": "number", "minimum": 0, "description": "Max edge displacement in pixels." },
+        "noiseFrequency": { "type": "number", "minimum": 0, "description": "Noise frequency multiplier." },
+        "antiAlias": { "type": "boolean", "description": "true = smooth edges (cel-shaded/painterly), false = hard pixels (pixel art)." }
+      }
+    },
+    "pairEffects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["boundary", "effects"],
+        "additionalProperties": false,
+        "properties": {
+          "boundary": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 2,
+            "maxItems": 2
+          },
+          "effects": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/effectConfig" }
+          }
+        }
+      },
+      "description": "Per-pair effect overrides. Each entry must reference a pair in adjacency[]."
+    },
+    "defaultEffects": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/effectConfig" },
+      "description": "Effects applied to pairs not listed in pairEffects. Defaults to 2px darken outline if omitted."
+    },
+    "variants": {
+      "type": "object",
+      "required": ["countPerMaterial", "strategy"],
+      "additionalProperties": false,
+      "properties": {
+        "countPerMaterial": { "type": "integer", "minimum": 1, "description": "Base variant tiles per material." },
+        "strategy": { "type": "string", "enum": ["grid-slice"], "description": "Variant selection strategy." }
+      }
+    },
+    "atlas": {
+      "type": "object",
+      "required": ["columns", "padding"],
+      "additionalProperties": false,
+      "properties": {
+        "columns": { "type": "integer", "minimum": 1, "description": "Atlas grid width." },
+        "padding": { "type": "integer", "minimum": 0, "description": "Inter-tile padding in pixels." }
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "description": "Forward-compatible extension field. ForgeTileset ignores unknown keys."
+    }
+  },
+  "$defs": {
+    "effectConfig": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": { "type": "string", "enum": ["outline", "cliff-face", "cliff-shadow", "soft-edge", "step-shadow"] },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "depth": { "type": "integer", "minimum": 1 },
+        "mode": { "type": "string", "enum": ["darken", "black", "none"] },
+        "alpha": { "type": "number", "minimum": 0, "maximum": 1 },
+        "angle": { "type": "number" },
+        "darkenFactor": { "type": "number", "minimum": 0, "maximum": 1 },
+        "direction": { "type": "string", "enum": ["south-east", "all"] }
       }
     }
   }

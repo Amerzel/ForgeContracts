@@ -10,7 +10,18 @@
     }
   },
   "materialCount": 2,
-  "tileCount": 22,
+  "tileCount": 36,
+  "baseTiles": 8,
+  "transitionTiles": 14,
   "effectOverlayTiles": 14,
+  "boundaryPairs": 1,
+  "atlasSize": [1024, 192],
+  "timings": {
+    "maskGeneration": "0ms",
+    "composition": "120ms",
+    "effectRendering": "45ms",
+    "atlasPacking": "30ms",
+    "total": "195ms"
+  },
   "warnings": []
 }

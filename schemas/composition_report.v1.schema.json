@@ -2,10 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://forge-contracts.amerzel.dev/composition_report.v1.schema.json",
   "title": "composition_report.v1",
-  "description": "ForgeTileset composition diagnostic report. Documents what was composed, coverage metrics, and any warnings.",
+  "description": "ForgeTileset composition diagnostic report. Documents what was composed, coverage metrics, timings, and any warnings.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema", "recipeId", "packId", "caseCoverage", "materialCount", "tileCount", "effectOverlayTiles", "warnings"],
+  "required": ["schema", "recipeId", "packId", "caseCoverage", "materialCount", "tileCount", "baseTiles", "transitionTiles", "effectOverlayTiles", "boundaryPairs", "atlasSize", "timings", "warnings"],
   "properties": {
     "schema": {
       "const": "composition_report.v1",
@@ -44,10 +44,44 @@
       "minimum": 0,
       "description": "Total tiles in the output atlas (variants + transitions + overlays)."
     },
+    "baseTiles": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of base variant tiles (material fills)."
+    },
+    "transitionTiles": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of base transition tiles (mask composites, renderOrder 0)."
+    },
     "effectOverlayTiles": {
       "type": "integer",
       "minimum": 0,
       "description": "Number of effect overlay tiles generated."
+    },
+    "boundaryPairs": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of boundary pairs declared in the recipe."
+    },
+    "atlasSize": {
+      "type": "array",
+      "items": { "type": "integer", "minimum": 0 },
+      "minItems": 2,
+      "maxItems": 2,
+      "description": "Atlas dimensions [width, height] in pixels."
+    },
+    "timings": {
+      "type": "object",
+      "required": ["maskGeneration", "composition", "effectRendering", "atlasPacking", "total"],
+      "properties": {
+        "maskGeneration": { "type": "string", "description": "Time spent generating masks." },
+        "composition": { "type": "string", "description": "Time spent compositing transitions." },
+        "effectRendering": { "type": "string", "description": "Time spent rendering effect overlays." },
+        "atlasPacking": { "type": "string", "description": "Time spent packing atlas and writing files." },
+        "total": { "type": "string", "description": "Total pipeline time." }
+      },
+      "description": "Per-stage pipeline timing breakdown."
     },
     "warnings": {
       "type": "array",
