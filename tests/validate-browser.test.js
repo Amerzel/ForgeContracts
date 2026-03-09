@@ -8,9 +8,9 @@ const FIXTURES_DIR = join(import.meta.dirname, '..', 'fixtures');
 
 describe('validate-browser', () => {
   describe('listSchemas', () => {
-    it('returns all 16 schemas', () => {
+    it('returns all 17 schemas', () => {
       const names = listSchemas();
-      expect(names).toHaveLength(16);
+      expect(names).toHaveLength(17);
     });
 
     it('matches the Node entrypoint schema list', () => {

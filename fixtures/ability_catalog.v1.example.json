@@ -1,0 +1,47 @@
+{
+  "schema": "ability_catalog.v1",
+  "producer": {
+    "tool": "ForgeEntity",
+    "version": "0.1.0",
+    "generatedAt": "2026-03-10T10:00:00.000Z"
+  },
+  "meta": {
+    "description": "Starter abilities for Emberfall party combat prototype"
+  },
+  "abilities": [
+    {
+      "id": "fireball",
+      "name": "Fireball",
+      "type": "attack",
+      "cost_focus": 12,
+      "target_mode": "single_enemy",
+      "damage_type": "magical",
+      "base_power": 25,
+      "cooldown_turns": 1,
+      "description": "Hurls a blazing fireball at a single enemy, dealing magical damage."
+    },
+    {
+      "id": "healing-light",
+      "name": "Healing Light",
+      "type": "heal",
+      "cost_focus": 8,
+      "target_mode": "single_ally",
+      "damage_type": "heal",
+      "base_power": 20,
+      "cooldown_turns": 0,
+      "description": "Bathes an ally in restorative light, recovering health."
+    },
+    {
+      "id": "battle-cry",
+      "name": "Battle Cry",
+      "type": "buff",
+      "cost_focus": 6,
+      "target_mode": "self",
+      "damage_type": "physical",
+      "base_power": 0,
+      "cooldown_turns": 3,
+      "applies_status_ref": "ea:status-attack-up",
+      "description": "Lets out a fearsome shout, boosting physical attack power."
+    }
+  ]
+}

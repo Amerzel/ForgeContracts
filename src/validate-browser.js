@@ -1,6 +1,7 @@
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 
+import abilityCatalog from '../schemas/ability_catalog.v1.schema.json' with { type: 'json' };
 import assetRequirements from '../schemas/asset_requirements.v1.schema.json' with { type: 'json' };
 import compositionReport from '../schemas/composition_report.v1.schema.json' with { type: 'json' };
 import encounterChangeSet from '../schemas/encounter_change_set.v1.schema.json' with { type: 'json' };
@@ -19,6 +20,7 @@ import validationReport from '../schemas/validation_report.v1.schema.json' with 
 import zone from '../schemas/zone.v1.schema.json' with { type: 'json' };
 
 const schemas = {
+  'ability_catalog.v1': abilityCatalog,
   'asset_requirements.v1': assetRequirements,
   'composition_report.v1': compositionReport,
   'encounter_change_set.v1': encounterChangeSet,
